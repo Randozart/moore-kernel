@@ -1,0 +1,55 @@
+// Moore Kernel - Bare-metal OS for Xilinx KV260
+
+let uptime: UInt = 0;
+let mounted_count: UInt = 0;
+let fence_active: Bool = false;
+
+rct txn init_kernel [true]
+  [uptime == 0]
+{
+  &uptime = 0;
+  &mounted_count = 0;
+  &fence_active = false;
+  term;
+};
+
+rct txn mount_bitstream [mounted_count < 4]
+  [mounted_count == @mounted_count + 1]
+{
+  &mounted_count = mounted_count + 1;
+  term;
+};
+
+rct txn unmount_bitstream [mounted_count > 0]
+  [mounted_count == @mounted_count - 1]
+{
+  &mounted_count = mounted_count - 1;
+  term;
+};
+
+rct txn activate_fence [mounted_count > 0]
+  [fence_active == true]
+{
+  &fence_active = true;
+  term;
+};
+
+rct txn deactivate_fence [fence_active == true]
+  [fence_active == false]
+{
+  &fence_active = false;
+  term;
+};
+
+rct txn tick [true]
+  [uptime == @uptime + 1]
+{
+  &uptime = uptime + 1;
+  term;
+};
+
+rct txn shutdown [mounted_count == 0 && fence_active == false]
+  [uptime == @uptime]
+{
+  term;
+};
