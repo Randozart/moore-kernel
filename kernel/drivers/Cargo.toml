@@ -1,6 +1,0 @@
-[package]
-name = "moore-drivers"
-version.workspace = true
-edition.workspace = true
-
-[dependencies]

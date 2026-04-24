@@ -1,16 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
-    "brief/compiler",
-    "brief/verifier",
-    "brief/stdlib",
-    "brief-control/bvc",
-    "brief-control/orchestrator",
-    "kernel/moore",
-    "kernel/msh",
-    "kernel/drivers",
-    "kernel/security",
-    "tools",
+    "brief-compiler",
 ]
 
 [workspace.package]

@@ -1,6 +1,0 @@
-[package]
-name = "brief-stdlib"
-version.workspace = true
-edition.workspace = true
-
-[dependencies]

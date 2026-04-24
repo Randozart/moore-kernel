@@ -1,14 +1,15 @@
 [package]
-name = "brief-compiler"
+name = "counsel"
 version = "0.1.0"
 edition = "2024"
+description = "The Brief compiler — Counsel prepares the Brief to obtain the Writ"
 
 [lib]
-name = "brief_compiler"
+name = "counsel_lib"
 path = "src/lib.rs"
 
 [[bin]]
-name = "brief-compiler"
+name = "counsel"
 path = "src/main.rs"
 
 [dependencies]

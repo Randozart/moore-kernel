@@ -1,6 +1,0 @@
-[package]
-name = "moore-security"
-version.workspace = true
-edition.workspace = true
-
-[dependencies]

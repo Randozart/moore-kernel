@@ -20,7 +20,7 @@
 // that is itself a compiler, interpreter, or similar tool that incorporates
 // or embeds the Work.
 
-use brief_compiler::{
+use counsel_lib::{
     annotator, ast, backend, desugarer, errors, hardware_validator, import_resolver, interpreter,
     lsp, manifest, parser, proof_engine, rbv, typechecker, view_compiler,
 };
@@ -257,7 +257,7 @@ fn detect_codicil_project(file_path: &Path) -> bool {
 }
 
 fn print_usage(program: &str) {
-    eprintln!("Brief Compiler v{}", env!("CARGO_PKG_VERSION"));
+    eprintln!("Counsel v{} — For the Moore Kernel", env!("CARGO_PKG_VERSION"));
     eprintln!();
     eprintln!("Usage: {} <command> [options] [file]", program);
     eprintln!();
@@ -271,7 +271,7 @@ fn print_usage(program: &str) {
     eprintln!("  run <file>       Compile, build WASM, serve, and open browser");
     eprintln!("  map <lib>        Analyze library and show generated bindings (dry-run)");
     eprintln!("  wrap <lib>       Generate FFI bindings for a library");
-    eprintln!("  install          Install 'brief' to ~/.local/bin");
+    eprintln!("  install          Install 'counsel' to ~/.local/bin");
     eprintln!("  lsp              Start Language Server (for IDE integration)");
     eprintln!();
     eprintln!("RBV Options:");
@@ -319,7 +319,7 @@ fn run_install() {
         .join("bin");
 
     let current_exe = std::env::current_exe().expect("Failed to get current executable path");
-    let install_path = install_dir.join("brief");
+    let install_path = install_dir.join("counsel");
 
     if !install_dir.exists() {
         fs::create_dir_all(&install_dir).expect("Failed to create install directory");
@@ -332,12 +332,12 @@ fn run_install() {
     )
     .expect("Failed to set permissions");
 
-    println!("Installed 'brief' to {}", install_path.display());
+    println!("Counsel rests. Installed to {}", install_path.display());
 
     // Metropolitan Installation: Unpack standard library TOMLs to share directory
     if let Some(data_dir) = dirs::data_dir() {
-        let brief_data_dir = data_dir.join("brief").join("ffi").join("bindings");
-        if let Err(e) = fs::create_dir_all(&brief_data_dir) {
+        let counsel_data_dir = data_dir.join("counsel").join("ffi").join("bindings");
+        if let Err(e) = fs::create_dir_all(&counsel_data_dir) {
             eprintln!(
                 "Warning: Failed to create standard library directory: {}",
                 e
@@ -345,10 +345,10 @@ fn run_install() {
         } else {
             println!(
                 "Unpacking standard library to {}...",
-                brief_data_dir.display()
+                counsel_data_dir.display()
             );
             for (filename, content) in STDLIB_BINDINGS {
-                let file_path = brief_data_dir.join(filename);
+                let file_path = counsel_data_dir.join(filename);
                 if let Err(e) = fs::write(&file_path, content) {
                     eprintln!(
                         "Warning: Failed to write standard library file {}: {}",
@@ -371,8 +371,8 @@ fn run_map_or_wrap(
     force: bool,
     is_wrap: bool,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    use brief_compiler::ffi::{MapperInfo, MapperRegistry};
-    use brief_compiler::wrapper::{
+    use counsel_lib::ffi::{MapperInfo, MapperRegistry};
+    use counsel_lib::wrapper::{
         analyze_library,
         generator::{
             generate_bindings_toml, generate_lib_bv, preview_generated, write_generated_files,

@@ -1,6 +1,0 @@
-[package]
-name = "moore-kernel"
-version.workspace = true
-edition.workspace = true
-
-[dependencies]

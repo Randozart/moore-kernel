@@ -1,0 +1,14 @@
+/home/randozart/Desktop/Projects/moore-kernel/target/release/deps/thiserror-4b72407c142bb6ca.d: /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/lib.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/aserror.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/display.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/var.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/private.rs /home/randozart/Desktop/Projects/moore-kernel/target/release/build/thiserror-d3976c3afa1fbe98/out/private.rs
+
+/home/randozart/Desktop/Projects/moore-kernel/target/release/deps/libthiserror-4b72407c142bb6ca.rlib: /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/lib.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/aserror.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/display.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/var.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/private.rs /home/randozart/Desktop/Projects/moore-kernel/target/release/build/thiserror-d3976c3afa1fbe98/out/private.rs
+
+/home/randozart/Desktop/Projects/moore-kernel/target/release/deps/libthiserror-4b72407c142bb6ca.rmeta: /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/lib.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/aserror.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/display.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/var.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/private.rs /home/randozart/Desktop/Projects/moore-kernel/target/release/build/thiserror-d3976c3afa1fbe98/out/private.rs
+
+/home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/lib.rs:
+/home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/aserror.rs:
+/home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/display.rs:
+/home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/var.rs:
+/home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.18/src/private.rs:
+/home/randozart/Desktop/Projects/moore-kernel/target/release/build/thiserror-d3976c3afa1fbe98/out/private.rs:
+
+# env-dep:OUT_DIR=/home/randozart/Desktop/Projects/moore-kernel/target/release/build/thiserror-d3976c3afa1fbe98/out

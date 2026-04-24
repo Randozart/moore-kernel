@@ -1,0 +1,14 @@
+/home/randozart/Desktop/Projects/moore-kernel/target/debug/deps/serde-44c2af95f67198b3.d: /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /home/randozart/Desktop/Projects/moore-kernel/target/debug/build/serde-6aeb262f7e7c722f/out/private.rs
+
+/home/randozart/Desktop/Projects/moore-kernel/target/debug/deps/libserde-44c2af95f67198b3.rlib: /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /home/randozart/Desktop/Projects/moore-kernel/target/debug/build/serde-6aeb262f7e7c722f/out/private.rs
+
+/home/randozart/Desktop/Projects/moore-kernel/target/debug/deps/libserde-44c2af95f67198b3.rmeta: /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /home/randozart/Desktop/Projects/moore-kernel/target/debug/build/serde-6aeb262f7e7c722f/out/private.rs
+
+/home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs:
+/home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs:
+/home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs:
+/home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs:
+/home/randozart/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs:
+/home/randozart/Desktop/Projects/moore-kernel/target/debug/build/serde-6aeb262f7e7c722f/out/private.rs:
+
+# env-dep:OUT_DIR=/home/randozart/Desktop/Projects/moore-kernel/target/debug/build/serde-6aeb262f7e7c722f/out
