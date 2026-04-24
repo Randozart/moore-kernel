@@ -1,0 +1,15 @@
+// boot_sequence.bvc - Explicit Mount/Unmount with Timeout
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// From BRIEF_CONTROL_SPEC.md Section 2.3
+
+using Imp_Core;
+
+control Boot_Sequence {
+    timeout ms = 5000;
+
+    mount Imp_Core to Tile_0 as RP_0;
+
+    timeout ms = 10000;
+    unmount Imp_Core from Tile_0;
+}

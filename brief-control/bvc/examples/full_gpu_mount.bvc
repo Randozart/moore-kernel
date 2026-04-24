@@ -1,0 +1,14 @@
+// multi_bitstream.bvc - Full GPU Mount with Fence
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// From BRIEF_CONTROL_SPEC.md Section 2.3
+
+using Rendered_GPU;
+using Blank_RP1;
+
+control Display {
+    target Tile_0;
+    partition Rendered_GPU across Tile_0 as RP_1;
+    fence RP_1 enable;
+    route pixel_link from Tile_0 to Tile_0 over Port_0;
+}

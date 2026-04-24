@@ -548,4 +548,411 @@ control Display {
         assert_eq!(program.using_decls[0], "Rendered_GPU");
         assert_eq!(program.control_blocks[0].name, "Display");
     }
+
+    #[test]
+    fn test_parse_multiple_using_decls() {
+        let source = r#"
+using Imp_Core;
+using Rendered_GPU;
+using Neural_Core;
+control Full_System {
+    target Tile_0;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        assert_eq!(program.using_decls.len(), 3);
+        assert_eq!(program.using_decls[0], "Imp_Core");
+        assert_eq!(program.using_decls[1], "Rendered_GPU");
+        assert_eq!(program.using_decls[2], "Neural_Core");
+    }
+
+    #[test]
+    fn test_parse_target_multiple_tiles() {
+        let source = r#"
+using Imp_Core;
+control Fabric {
+    target Tile_0, Tile_1, Tile_2;
+    partition Imp_Core across Tile_0;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Target(tiles) => {
+                assert_eq!(tiles.len(), 3);
+                assert_eq!(tiles[0], "Tile_0");
+                assert_eq!(tiles[1], "Tile_1");
+                assert_eq!(tiles[2], "Tile_2");
+            }
+            _ => panic!("Expected Target statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_partition_with_slot() {
+        let source = r#"
+using Rendered_GPU;
+control Display {
+    partition Rendered_GPU across Tile_0 as RP_1;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Partition(p) => {
+                assert_eq!(p.using_ref, "Rendered_GPU");
+                assert_eq!(p.tile_ref, "Tile_0");
+                assert_eq!(p.slot_id, Some("RP_1".to_string()));
+            }
+            _ => panic!("Expected Partition statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_partition_without_slot() {
+        let source = r#"
+using Imp_Core;
+control Fabric {
+    partition Imp_Core across Tile_0;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Partition(p) => {
+                assert_eq!(p.using_ref, "Imp_Core");
+                assert_eq!(p.tile_ref, "Tile_0");
+                assert_eq!(p.slot_id, None);
+            }
+            _ => panic!("Expected Partition statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_route_simple() {
+        let source = r#"
+using Imp_Core;
+control Fabric {
+    route pixel_link over Port_0;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Route(r) => {
+                assert_eq!(r.route_name, "pixel_link");
+                assert_eq!(r.from_tile, None);
+                assert_eq!(r.to_tile, None);
+                assert_eq!(r.port_ref, "Port_0");
+            }
+            _ => panic!("Expected Route statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_route_with_from_to() {
+        let source = r#"
+using Imp_Core;
+control Fabric {
+    route high_speed_link from Tile_0 to Tile_2 over Port_0;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Route(r) => {
+                assert_eq!(r.route_name, "high_speed_link");
+                assert_eq!(r.from_tile, Some("Tile_0".to_string()));
+                assert_eq!(r.to_tile, Some("Tile_2".to_string()));
+                assert_eq!(r.port_ref, "Port_0");
+            }
+            _ => panic!("Expected Route statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_mount_with_slot() {
+        let source = r#"
+using Imp_Core;
+control Boot {
+    mount Imp_Core to Tile_0 as RP_0;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Mount(m) => {
+                assert_eq!(m.using_ref, "Imp_Core");
+                assert_eq!(m.tile_ref, "Tile_0");
+                assert_eq!(m.slot_id, Some("RP_0".to_string()));
+            }
+            _ => panic!("Expected Mount statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_mount_without_slot() {
+        let source = r#"
+using Imp_Core;
+control Boot {
+    mount Imp_Core to Tile_0;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Mount(m) => {
+                assert_eq!(m.using_ref, "Imp_Core");
+                assert_eq!(m.tile_ref, "Tile_0");
+                assert_eq!(m.slot_id, None);
+            }
+            _ => panic!("Expected Mount statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_unmount_with_from() {
+        let source = r#"
+using Imp_Core;
+control Shutdown {
+    unmount Imp_Core from Tile_0;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Unmount(u) => {
+                assert_eq!(u.using_ref, "Imp_Core");
+                assert_eq!(u.tile_ref, Some("Tile_0".to_string()));
+            }
+            _ => panic!("Expected Unmount statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_unmount_without_from() {
+        let source = r#"
+using Imp_Core;
+control Shutdown {
+    unmount Imp_Core;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Unmount(u) => {
+                assert_eq!(u.using_ref, "Imp_Core");
+                assert_eq!(u.tile_ref, None);
+            }
+            _ => panic!("Expected Unmount statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_fence_enable() {
+        let source = r#"
+using Imp_Core;
+control Fabric {
+    fence RP_0 enable;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Fence(f) => {
+                assert_eq!(f.slot_id, "RP_0");
+                assert_eq!(f.action, crate::FenceAction::Enable);
+            }
+            _ => panic!("Expected Fence statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_fence_disable() {
+        let source = r#"
+using Imp_Core;
+control Fabric {
+    fence RP_0 disable;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Fence(f) => {
+                assert_eq!(f.slot_id, "RP_0");
+                assert_eq!(f.action, crate::FenceAction::Disable);
+            }
+            _ => panic!("Expected Fence statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_timeout_ms() {
+        let source = r#"
+using Imp_Core;
+control Boot {
+    timeout ms = 5000;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Timeout(t) => {
+                assert_eq!(t.value, 5000);
+                assert_eq!(t.unit, crate::TimeoutUnit::Ms);
+            }
+            _ => panic!("Expected Timeout statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_timeout_sec() {
+        let source = r#"
+using Imp_Core;
+control Boot {
+    timeout s = 30;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Timeout(t) => {
+                assert_eq!(t.value, 30);
+                assert_eq!(t.unit, crate::TimeoutUnit::Sec);
+            }
+            _ => panic!("Expected Timeout statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_timeout_min() {
+        let source = r#"
+using Imp_Core;
+control Boot {
+    timeout min = 5;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        match &block.stmts[0] {
+            ControlStmt::Timeout(t) => {
+                assert_eq!(t.value, 5);
+                assert_eq!(t.unit, crate::TimeoutUnit::Min);
+            }
+            _ => panic!("Expected Timeout statement"),
+        }
+    }
+
+    #[test]
+    fn test_parse_dotted_using_ref() {
+        let source = r#"
+using Company.Product.Core;
+control Fabric {
+    partition Company.Product.Core across Tile_0;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        assert_eq!(program.using_decls[0], "Company.Product.Core");
+    }
+
+    #[test]
+    fn test_parse_multi_control_blocks() {
+        let source = r#"
+using Imp_Core;
+using Rendered_GPU;
+control Init {
+    target Tile_0;
+    partition Imp_Core across Tile_0;
+}
+control Display {
+    target Tile_1;
+    partition Rendered_GPU across Tile_1 as RP_1;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        assert_eq!(program.control_blocks.len(), 2);
+        assert_eq!(program.control_blocks[0].name, "Init");
+        assert_eq!(program.control_blocks[1].name, "Display");
+    }
+
+    #[test]
+    fn test_parse_full_gpu_example() {
+        let source = r#"
+using Rendered_GPU;
+using Blank_RP1;
+control Display {
+    target Tile_0;
+    partition Rendered_GPU across Tile_0 as RP_1;
+    fence RP_1 enable;
+    route pixel_link from Tile_0 to Tile_0 over Port_0;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        assert_eq!(program.using_decls.len(), 2);
+        assert_eq!(program.control_blocks[0].name, "Display");
+        assert_eq!(program.control_blocks[0].stmts.len(), 4);
+    }
+
+    #[test]
+    fn test_parse_multi_bitstream_coordination() {
+        let source = r#"
+using Imp_Core;
+using Rendered_GPU;
+using Neural_Core;
+control Full_System {
+    target Tile_0;
+    partition Imp_Core across Tile_0 as RP_0;
+    fence RP_0 enable;
+    target Tile_1;
+    partition Rendered_GPU across Tile_1 as RP_1;
+    fence RP_1 enable;
+    target Tile_2;
+    partition Neural_Core across Tile_2 as RP_2;
+    fence RP_2 enable;
+    route high_speed_link from Tile_0 to Tile_2 over Port_0;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        assert_eq!(block.stmts.len(), 10);
+    }
+
+    #[test]
+    fn test_parse_explicit_mount_unmount() {
+        let source = r#"
+using Imp_Core;
+control Boot_Sequence {
+    timeout ms = 5000;
+    mount Imp_Core to Tile_0 as RP_0;
+    timeout ms = 10000;
+    unmount Imp_Core from Tile_0;
+}
+"#;
+        let program = parse_bvc(source).unwrap();
+        let block = &program.control_blocks[0];
+        assert_eq!(block.stmts.len(), 4);
+    }
+
+    #[test]
+    fn test_parse_error_unexpected_eof() {
+        let source = r#"
+using Imp_Core;
+control Fabric {
+    target Tile_0;
+"#;
+        let result = parse_bvc(source);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_parse_error_unexpected_token() {
+        let source = r#"
+using Imp_Core;
+badkeyword Fabric {
+    target Tile_0;
+}
+"#;
+        let result = parse_bvc(source);
+        assert!(result.is_err());
+    }
 }

@@ -1,0 +1,22 @@
+// multi_tile_coordination.bvc - Multi-Bitstream Coordination
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// From BRIEF_CONTROL_SPEC.md Section 2.3
+// Note: Uses RP slots defined in kv260.toml (RP_0, RP_1, RP_2)
+
+using Imp_Core;
+using Rendered_GPU;
+using Neural_Core;
+
+control Full_System {
+    partition Imp_Core across RP_0 as RP_0;
+    fence RP_0 enable;
+
+    partition Rendered_GPU across RP_1 as RP_1;
+    fence RP_1 enable;
+
+    partition Neural_Core across RP_2 as RP_2;
+    fence RP_2 enable;
+
+    route high_speed_link from RP_0 to RP_2 over aurora_0;
+}
