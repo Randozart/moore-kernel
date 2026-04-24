@@ -664,6 +664,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "moore"
+version = "0.1.0"
+
+[[package]]
 name = "msh"
 version = "0.1.0"
 dependencies = [

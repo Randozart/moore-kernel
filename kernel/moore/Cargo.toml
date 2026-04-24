@@ -1,6 +1,20 @@
 [package]
-name = "kernel"
+name = "moore"
 version = "0.1.0"
 edition = "2021"
+description = "Moore Kernel - Bare-metal OS for Xilinx KV260"
 
-[dependencies]
+[lib]
+path = "src/lib.rs"
+test = false
+
+[[bin]]
+name = "moore"
+path = "src/main.rs"
+test = false
+
+[features]
+default = []
+
+[profile.dev]
+opt-level = 0

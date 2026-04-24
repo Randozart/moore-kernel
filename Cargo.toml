@@ -6,6 +6,7 @@ members = [
     "kernel/msh",
     "kernel/drivers",
     "kernel/security",
+    "kernel/moore",
 ]
 
 [workspace.package]

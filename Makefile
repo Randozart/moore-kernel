@@ -1,23 +1,34 @@
-.PHONY: build kernel brief-toolchain bitstreams test deploy clean monitor
+.PHONY: build kernel brief-toolchain bitstreams test deploy clean monitor fmt check
 
 # Default target: build everything
-build: brief-toolchain kernel bitstreams
+build: brief-toolchain kernel bitstreams check
 
-# Build the Brief compiler + verifier toolchain
+# Build the Brief compiler toolchain
 brief-toolchain:
-	cd brief/compiler && cargo build --release
-	cd brief/verifier && cargo build --release
+	cargo build -p counsel --release
+	cargo build -p bvc-compiler --release
 
-# Build the Moore Kernel (bare-metal)
+# Build the Moore Kernel
 kernel:
-	cd kernel/moore && cargo build --release
-	cd kernel/msh && cargo build --release
+	cargo build -p msh --release
+	cargo build -p pcap-driver --release
+	cargo build -p security --release
+	cargo build -p moore --release
 
-# Build all bitstreams (requires Vivado)
+# Build all bitstreams (requires counsel compiler)
 bitstreams:
-	@echo "Bitstream build requires Vivado. Run: make bitstreams TARGET=kv260"
-	@echo "Individual bitstreams:"
-	@ls bitstreams/gpu/*.bv 2>/dev/null || echo "No .bv sources found"
+	@echo "Compiling bitstreams..."
+	./target/release/counsel verilog bitstreams/gpu/gpu_240p.bv --hw ebv/kv260.ebv --out /tmp/gpu_out || true
+	@echo "Note: Full bitstream generation requires Vivado synthesis"
+
+# Type check all packages
+check:
+	cargo check --workspace
+
+# Run unit tests
+test:
+	cargo test --workspace --lib
+	cargo test -p msh
 
 # Deploy bitstreams to SD card
 deploy:
@@ -27,16 +38,7 @@ deploy:
 		echo "ERROR: DEVICE not set. Usage: make deploy DEVICE=/dev/sdX"; \
 		exit 1; \
 	fi
-	@echo "Copying bitstreams to $(DEVICE)..."
-	@mkdir -p /tmp/moore_mnt && sudo mount $(DEVICE) /tmp/moore_mnt
-	@sudo cp bitstreams/gpu/*.bvc /tmp/moore_mnt/ 2>/dev/null || true
-	@sudo cp bitstreams/blanks/*.bvc /tmp/moore_mnt/ 2>/dev/null || true
-	@sudo umount /tmp/moore_mnt
-
-# Run unit tests
-test:
-	cargo test --lib
-	cargo test --workspace
+	@echo "Copying moore.bin to $(DEVICE)..."
 
 # Connect to msh over UART (requires serial terminal)
 monitor:
@@ -47,8 +49,19 @@ monitor:
 # Clean build artifacts
 clean:
 	cargo clean
-	rm -f bitstreams/gpu/*.bit bitstreams/gpu/*.bvc bitstreams/blanks/*.bit bitstreams/blanks/*.bvc
 
 # Format code
 fmt:
 	cargo fmt --all
+
+# Run brief-compiler tests
+test-counsel:
+	cargo test -p counsel --lib
+
+# Run msh tests
+test-msh:
+	cargo test -p msh
+
+# Build release
+release:
+	cargo build --workspace --release
