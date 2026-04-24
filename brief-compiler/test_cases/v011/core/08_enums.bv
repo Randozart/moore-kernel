@@ -1,0 +1,18 @@
+// Test: Enum definitions with variants
+// Category: Core - Enums
+// Expected: Compiles with enum definition
+
+enum Status {
+    Idle,
+    Processing,
+    Done,
+}
+
+let counter: Int = 0;
+
+rct txn set_processing [counter == 0]
+  [counter == 1]
+{
+    &counter = 1;
+    term;
+};

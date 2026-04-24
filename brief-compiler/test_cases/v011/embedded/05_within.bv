@@ -1,0 +1,15 @@
+// Test: Within timeout syntax
+// Category: Embedded - Within
+// Expected: Parses (timeout synthesis for embedded)
+
+// The within clause: result = read_spi() within 10 cycles;
+// Synthesizes a down-counter for cycle-accurate timeouts.
+
+let result: UInt = 0;
+
+rct txn read_spi [result == 0]
+  [result > 0]
+{
+    &result = result + 1;
+    term;
+};

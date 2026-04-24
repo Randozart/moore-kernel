@@ -1,0 +1,127 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Rendered Brief",
+  "fileTypes": ["rbv"],
+  "firstLineMatch": "^<script",
+  "patterns": [
+    {
+      "include": "#rbv-tags"
+    }
+  ],
+  "repository": {
+    "rbv-tags": {
+      "patterns": [
+        {
+          "include": "#script-tag"
+        },
+        {
+          "include": "#view-tag"
+        },
+        {
+          "include": "#style-tag"
+        },
+        {
+          "include": "#plain-text"
+        }
+      ]
+    },
+    "script-tag": {
+      "begin": "(<script>|<script type=\"brief\">)",
+      "beginCaptures": {
+        "1": { "name": "tag.embedded.script.brief" },
+        "2": { "name": "tag.embedded.script.brief" }
+      },
+      "end": "</script>",
+      "endCaptures": {
+        "0": { "name": "tag.embedded.script.brief" }
+      },
+      "patterns": [
+        {
+          "include": "#brief-with-html"
+        }
+      ]
+    },
+    "brief-with-html": {
+      "patterns": [
+        {
+          "include": "source.brief"
+        },
+        {
+          "include": "#inline-html"
+        }
+      ]
+    },
+    "inline-html": {
+      "patterns": [
+        {
+          "include": "text.html.basic"
+        }
+      ]
+    },
+    "view-tag": {
+      "begin": "<view>",
+      "beginCaptures": {
+        "0": { "name": "tag.embedded.view.brief" }
+      },
+      "end": "</view>",
+      "endCaptures": {
+        "0": { "name": "tag.embedded.view.brief" }
+      },
+      "patterns": [
+        {
+          "include": "#html-components"
+        },
+        {
+          "include": "text.html.basic"
+        },
+        {
+          "include": "#brief-bindings"
+        }
+      ]
+    },
+    "html-components": {
+      "patterns": [
+        {
+          "name": "entity.name.type.custom.brief",
+          "match": "<[A-Z][a-zA-Z0-9_]*(\\s+[^>]*)?/?>"
+        },
+        {
+          "name": "entity.name.type.custom.brief",
+          "match": "</[A-Z][a-zA-Z0-9_]*>"
+        }
+      ]
+    },
+    "style-tag": {
+      "begin": "<style>",
+      "beginCaptures": {
+        "0": { "name": "tag.embedded.style.brief" }
+      },
+      "end": "</style>",
+      "endCaptures": {
+        "0": { "name": "tag.embedded.style.brief" }
+      },
+      "patterns": [
+        {
+          "include": "source.css"
+        }
+      ]
+    },
+    "brief-bindings": {
+      "patterns": [
+        {
+          "name": "meta.attribute.brief-binding",
+          "match": "b-\\w+=\"[^\"]*\""
+        }
+      ]
+    },
+    "plain-text": {
+      "patterns": [
+        {
+          "name": "text.plain",
+          "match": "[^<]+"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.rbv"
+}

@@ -1,0 +1,17 @@
+// Standard I/O Library
+// Foreign function declarations
+
+frgn __print(msg: String) -> Result<Bool, IoError> from "std/bindings/io.toml";
+frgn __println(msg: String) -> Result<Bool, IoError> from "std/bindings/io.toml";
+frgn __input() -> Result<String, IoError> from "std/bindings/io.toml";
+defn print(msg: String) -> Bool [true][true] {
+  term true;
+};
+
+defn println(msg: String) -> Bool [true][true] {
+  term true;
+};
+
+defn input() -> String [true][true] {
+  term "";
+};
