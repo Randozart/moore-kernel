@@ -13,6 +13,9 @@ make build
 # Run tests
 make test
 
+# Check code compiles
+make check
+
 # Deploy to SD card (requires KV260 connected)
 make deploy DEVICE=/dev/sdX
 
@@ -26,7 +29,7 @@ make monitor
 User writes Brief (.bv)
         │
         ▼
-Brief Compiler + Verifier
+counsel (Brief Compiler)
         │  Formal contracts, LTL, SMT proofs
         ▼
 SystemVerilog
@@ -35,7 +38,7 @@ SystemVerilog
 Vivado Synthesis + Place-and-Route
         │
         ▼
-Signed Bitstream Package (.bvc + .bv.sig + .bv.enc)
+Signed Bitstream Package (.writ + .writ.sig)
         │
         ▼
 SD Card Storage
@@ -57,8 +60,7 @@ Rendered GPU (bitstream) ──► HDMI Display
 | Brief | `.bv` | Pure logic, contracts |
 | Embedded Brief | `.ebv` | Chip drivers, tethers |
 | Brief Control | `.bvc` | Orchestration, mounting |
-| Moore Kernel | — | Bare-metal OS |
-| Moore Shell | `.msh` | Predicate-logic CLI |
+| Rendered Brief | `.rbv` | Hardware UI (HTML/CSS → circuit) |
 
 ## Target Hardware
 
@@ -68,6 +70,64 @@ Rendered GPU (bitstream) ──► HDMI Display
   - 1,248 DSP slices
   - 2 GB DDR4
 
+## Project Structure
+
+```
+brief-compiler/     # counsel - Brief language compiler (89 tests)
+brief-control/bvc/  # bvc-compiler - Brief Control compiler (4 tests)
+kernel/
+  msh/              # Moore Shell - Propositional Interface (9 tests)
+  moore/            # Moore Kernel - no_std bare-metal kernel
+  drivers/          # PCAP driver
+  security/         # PUF, active fences, APAC
+ebv/                # Embedded Brief files (kv260.ebv, kernel.ebv)
+bitstreams/gpu/     # GPU bitstream sources (gpu_240p.bv)
+shell/static_shell/ # Static Shell documentation
+tools/              # build.py, sign.py
+```
+
+## Moore Shell (msh)
+
+msh is a **Propositional Interface** based on predicate logic. You do not issue commands; you propose states of the world.
+
+```
+MOORE SHELL v0.1
+══════════════════════════════════════════════════════════
+
+FABRIC:
+- TOTAL CAPACITY: 256000 LUTs
+- AVAILABLE:        256000 LUTs
+
+STORAGE (SD Card):
+- Imp_Core.writ  [1234567 bytes] [VERIFIED]
+- Rendered_GPU.writ  [5678901 bytes] [VERIFIED]
+
+MOUNTED:
+- None.
+
+PROPOSITIONAL CONTEXT READY.
+WHAT IS YOUR PROPOSITION?
+> Imp_Core exists_on Tile_0.
+WORK REQUIRED:
+  1. Load Imp_Core.writ from SD card.         [OK]
+  2. Verify signature against PUF-KEK.        [OK]
+  3. Check leakage contract.                   [VERIFIED]
+  4. Mount to RP_0 via PCAP.                  [OK]
+  5. Activate fence.                           [OK]
+RESULT: Imp_Core exists_on Tile_0. [TRUE]
+```
+
+### Tether Discovery
+
+Tethers expose hardware state via SQL-like queries. Use `?` for discovery:
+
+```
+> Tile_0 ?
+TILE(0) is a [FABRIC_TILE].
+Accepts predicates: { exists_on, absent, is_active, clear, probe }.
+Capacity: 256000 LUTs, 256000 available.
+```
+
 ## Security
 
 Multi-tenant security is enforced from day one:
@@ -75,49 +135,6 @@ Multi-tenant security is enforced from day one:
 - PUF-encrypted bitstreams at rest
 - Active Ring Oscillator fences in moat zones
 - SHELL/ROLE architecture prevents cross-partition data exfiltration
-
-## Project Structure
-
-```
-brief/compiler/     # Brief language compiler
-brief/verifier/      # Formal verification (LTL + SMT)
-brief/stdlib/       # Standard library
-brief-control/       # Brief Control compiler + orchestrator
-kernel/moore/        # Moore Kernel (bare-metal)
-kernel/msh/          # Moore Shell (predicate-logic CLI)
-kernel/drivers/      # Board drivers (DDR4, SD, PCAP)
-kernel/security/     # PUF, active fences, APAC
-bitstreams/          # Bitstream sources and blanks
-shell/               # Static Shell Vivado project
-ebv/                 # Embedded Brief for target boards
-docs/decisions/      # Architecture Decision Records
-```
-
-## Moore Shell (msh)
-
-msh is not a traditional CLI. It is a **Propositional Interface** based on predicate logic. You do not issue commands; you propose states of the world.
-
-```
-MOORE SHELL v0.1
-
-FABRIC:
-- TILE(0) IS [CONNECTED] AND [VERIFIED].
-- FABRIC_CAPACITY: 256,000 LUTs.
-
-STORAGE (SD Card):
-- Imp_Core.bvc       [VERIFIED]  [READY]
-- Rendered_GPU.bvc   [VERIFIED]  [READY]
-
-WHAT IS YOUR PROPOSITION?
-> Imp_Core exists_on Tile_0.
-WORK REQUIRED:
-  1. Load Imp_Core.bvc from SD card.         [OK]
-  2. Verify signature against PUF-KEK.        [OK]
-  3. Check leakage contract.                 [VERIFIED]
-  4. Mount to RP-0 via PCAP.                 [OK]
-  5. Activate active fence around RP-0.      [OK]
-RESULT: Imp_Core exists_on Tile_0. [TRUE]
-```
 
 ## Build Requirements
 
@@ -128,4 +145,7 @@ RESULT: Imp_Core exists_on Tile_0. [TRUE]
 
 ## References
 
-See `SPEC.md` for the full MVP specification.
+- `SPEC.md` — Full MVP specification
+- `BRIEF_CONTROL_SPEC.md` — Brief Control language specification
+- `CLAUDE.md` — Developer guidelines
+- `LITANIES.md` — Chancery manifest

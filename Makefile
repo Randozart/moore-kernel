@@ -65,3 +65,35 @@ test-msh:
 # Build release
 release:
 	cargo build --workspace --release
+
+# Assemble kernel from Brief to ARM ELF
+# Requires: aarch64-none-elf toolchain
+assemble:
+	@echo "Assembling Moore Kernel from Brief..."
+	@mkdir -p kernel/moore/generated
+	./target/release/counsel arm kernel/moore/main.bv --out kernel/moore/generated/
+	@echo ""
+	@echo "Generated ARM Rust: kernel/moore/generated/main.rs"
+	@echo "Linker script: kernel/moore/linker/kernel.ld"
+	@echo ""
+	@echo "To build ELF (requires aarch64-none-elf-gcc):"
+	@echo "  aarch64-none-elf-gcc -T kernel/moore/linker/kernel.ld \\"
+	@echo "    -nostdlib -o build/moore.elf \\"
+	@echo "    kernel/moore/src/generated.rs kernel/moore/src/boot.rs"
+
+# Compile FSBL from Brief
+fsbl:
+	@mkdir -p kernel/moore/generated
+	./target/release/counsel arm kernel/moore/fsbl.bv --out kernel/moore/generated/fsbl/
+	@echo "Generated FSBL ARM Rust: kernel/moore/generated/fsbl/"
+
+# Build Vivado tcl scripts
+vivado-scripts:
+	@echo "Vivado scripts created:"
+	@ls -la shell/static_shell/
+
+# Generate combined BOOT.BIN (requires bootgen)
+boot-image:
+	@echo "Creating boot image..."
+	@echo "Requires: Xilinx bootgen and FSBL.elf + static_shell.bit"
+	@echo "BOOT.BIN format: [FSBL][static_shell][moore_kernel]"

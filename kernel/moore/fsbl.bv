@@ -1,0 +1,64 @@
+// FSBL.bv - First Stage Boot Loader for Moore Kernel
+// Runs from OCM (0xFFF0_0000) before DDR is available
+// Feeds into boot.rs which initializes clocks/DDR
+
+let oem_code: UInt = 0;
+let boot_dev: UInt = 0;
+let ddr_init_done: Bool = false;
+let clocks_init_done: Bool = false;
+let load_done: Bool = false;
+let jump_target: UInt = 0;
+
+let fsbl_state: UInt = 0;
+// States: 0=init, 1=clocks, 2=ddr, 3=load, 4=jump
+
+rct txn fsbl_init [true]
+  [oem_code == 0]
+{
+  &fsbl_state = 0;
+  &ddr_init_done = false;
+  &clocks_init_done = false;
+  &load_done = false;
+  term;
+};
+
+rct txn detect_boot_device [fsbl_state == 0]
+  [fsbl_state == 1]
+{
+  &boot_dev = 1;
+  term;
+};
+
+rct txn init_clocks [fsbl_state == 1]
+  [clocks_init_done == true]
+{
+  &clocks_init_done = true;
+  term;
+};
+
+rct txn init_ddr [fsbl_state == 1 && clocks_init_done == true]
+  [ddr_init_done == true]
+{
+  &ddr_init_done = true;
+  term;
+};
+
+rct txn load_kernel [fsbl_state == 1 && ddr_init_done == true]
+  [load_done == true]
+{
+  &load_done = true;
+  term;
+};
+
+rct txn set_jump_target [load_done == true]
+  [jump_target > 0]
+{
+  &jump_target = 0x00000000;
+  term;
+};
+
+rct txn boot_to_kernel [jump_target > 0 && load_done == true]
+  [fsbl_state == 99]
+{
+  term;
+};

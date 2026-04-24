@@ -145,11 +145,8 @@ impl WasmGenerator {
         output.push_str("#![no_main]\n");
         output.push_str("#![feature(panic_info)]\n\n");
 
-        output.push_str("use core::fmt;\n");
-        output.push_str("use core::mem::zeroed;\n");
         output.push_str("use core::ptr::{read_volatile, write_volatile};\n\n");
 
-        // Collect state declarations with their bit ranges
         let mut state_decls: Vec<(&String, &Type, &Option<BitRange>, &Option<u64>)> = Vec::new();
         for item in &program.items {
             if let TopLevel::StateDecl(decl) = item {
@@ -157,46 +154,67 @@ impl WasmGenerator {
             }
         }
 
-        // Generate state struct with proper types based on bit_range
+        output.push_str("// State variable offsets in the State struct\n");
+        for (i, (name, ty, bit_range, _)) in state_decls.iter().enumerate() {
+            let rust_type = Self::get_rust_type_for_arm(ty, bit_range);
+            output.push_str(&format!("//   {}: {} (offset {})\n", name, rust_type, i));
+        }
+        output.push('\n');
+
         output.push_str("#[repr(C)]\n");
         output.push_str("pub struct State {\n");
         for (name, ty, bit_range, addr) in &state_decls {
             let rust_type = Self::get_rust_type_for_arm(ty, bit_range);
-            output.push_str(&format!("    pub {}: {},\n", name.replace('-', "_"), rust_type));
+            let mmio_note = if addr.is_some() {
+                format!(" // MMIO at 0x{:08X}", addr.unwrap())
+            } else {
+                String::new()
+            };
+            output.push_str(&format!("    pub {}: {},{}\n", name.replace('-', "_"), rust_type, mmio_note));
         }
         output.push_str("}\n\n");
 
-        // Generate MMIO base addresses
-        output.push_str("// MMIO Base Addresses\n");
-        let mut generated_addrs = std::collections::HashSet::new();
-        for (name, ty, bit_range, addr) in &state_decls {
-            if let Some(base_addr) = addr {
-                let addr_str = format!("0x{:08X}", base_addr);
-                if !generated_addrs.contains(&addr_str) {
-                    output.push_str(&format!("const {}: *mut State = {} as *mut State;\n", 
-                        Self::mmio_const_name(name), addr_str));
-                    generated_addrs.insert(addr_str);
-                }
-            }
-        }
-        output.push('\n');
+        output.push_str("// MMIO Base Addresses for KV260\n");
+        output.push_str("const UART0_BASE: u32 = 0xFF00_0000;\n");
+        output.push_str("const PCAP_BASE: u32 = 0xFF0A_0000;\n");
+        output.push_str("const GPIO_BASE: u32 = 0xFF0B_0000;\n");
+        output.push_str("const SDIO_BASE: u32 = 0xFF0C_0000;\n");
+        output.push_str("const DDR_CTRL_BASE: u32 = 0xF800_0000;\n");
+        output.push_str("const CRL_APB_BASE: u32 = 0xFF5E_0000;\n\n");
+
+        output.push_str("// Error codes\n");
+        output.push_str("const ERR_OK: u8 = 0;\n");
+        output.push_str("const ERR_CONDITION_FAILED: u8 = 0x01;\n");
+        output.push_str("const ERR_INVALID_PARAM: u8 = 0x02;\n");
+        output.push_str("const ERR_HARDWARE_FAULT: u8 = 0x03;\n");
+        output.push_str("const ERR_SLOT_OCCUPIED: u8 = 0x10;\n");
+        output.push_str("const ERR_FENCE_ACTIVE: u8 = 0x20;\n\n");
 
         output.push_str("impl State {\n");
         output.push_str("    pub fn new() -> Self {\n");
-        output.push_str("        unsafe { zeroed() }\n");
-        output.push_str("    }\n");
-        
-        // Generate getters/setters for MMIO addresses
-        for (name, ty, bit_range, addr) in &state_decls {
-            if addr.is_some() {
-                let const_name = Self::mmio_const_name(name);
-                output.push_str(&format!(
-                    "    pub fn {}_addr() -> *mut State {{ {} }}\n",
-                    name.replace('-', "_"),
-                    const_name
-                ));
-            }
+        output.push_str("        Self {\n");
+        for (name, _, _, _) in &state_decls {
+            output.push_str(&format!("            {}: 0,\n", name.replace('-', "_")));
         }
+        output.push_str("        }\n");
+        output.push_str("    }\n\n");
+
+        output.push_str("    pub fn uptime_ticks(&self) -> u64 {\n");
+        output.push_str("        ((self.uptime as u64) << 32) | (self.tick_count as u64)\n");
+        output.push_str("    }\n\n");
+
+        output.push_str("    fn check_precondition(expr_code: &str) -> bool {\n");
+        output.push_str("        // Simple boolean expression evaluator for preconditions\n");
+        output.push_str("        // Returns true if expression evaluates to true\n");
+        output.push_str("        // In a full implementation, this would parse and evaluate the expression\n");
+        output.push_str("        expr_code.is_empty() || expr_code == \"true\"\n");
+        output.push_str("    }\n\n");
+
+        output.push_str("    fn evaluate_postcondition(expr_code: &str, state: &State) -> bool {\n");
+        output.push_str("        // Evaluate postcondition - returns true if satisfied\n");
+        output.push_str("        // Stub implementation\n");
+        output.push_str("        true\n");
+        output.push_str("    }\n");
         output.push_str("}\n\n");
 
         output.push_str("impl Default for State {\n");
@@ -205,37 +223,291 @@ impl WasmGenerator {
         output.push_str("    }\n");
         output.push_str("}\n\n");
 
-        // Generate transactions as functions
-        for (txn_name, &id) in &self.txn_map {
-            let txn = &self.reactive_txns[id];
-            output.push_str(&format!(
-                "pub fn {}(state: &mut State) -> bool {{\n",
-                txn_name.replace('-', "_")
-            ));
-            output.push_str(&format!(
-                "    // pre: {:?}\n",
-                txn.contract.pre_condition
-            ));
-            
-            // Generate basic body - in full implementation would translate the body
-            output.push_str("    // TODO: implement transaction body\n");
-            output.push_str("    true\n");
-            output.push_str("}\n\n");
+        for item in &program.items {
+            if let TopLevel::Transaction(txn) = item {
+                self.generate_arm_transaction(&mut output, txn, &state_decls);
+            }
         }
 
-        // Generate entry point (first reactive transaction)
+        output.push_str("// Entry point - scheduler loop\n");
         output.push_str("#[no_mangle]\n");
-        output.push_str("pub extern \"C\" fn _start() -> ! {\n");
-        output.push_str("    loop {}\n");
+        output.push_str("pub extern \"C\" fn moore_main() -> ! {\n");
+        output.push_str("    let mut state = State::new();\n\n");
+        output.push_str("    // Initialize hardware\n");
+        output.push_str("    // ... (boot code would go here)\n\n");
+        output.push_str("    // Initialize kernel\n");
+        output.push_str("    if init_kernel(&mut state) != ERR_OK {\n");
+        output.push_str("        loop {}\n");
+        output.push_str("    }\n\n");
+        output.push_str("    // Main scheduler loop\n");
+        output.push_str("    loop {\n");
+        output.push_str("        tick(&mut state);\n");
+        output.push_str("        // Check reactive transactions\n");
+        output.push_str("    }\n");
         output.push_str("}\n\n");
 
-        // Generate panic handler
         output.push_str("#[panic_handler]\n");
         output.push_str("fn panic(_info: &core::panic::PanicInfo) -> ! {\n");
         output.push_str("    loop {}\n");
         output.push_str("}\n");
 
         output
+    }
+
+    fn generate_arm_transaction(&self, output: &mut String, txn: &Transaction, state_decls: &[(&String, &Type, &Option<BitRange>, &Option<u64>)]) {
+        let fn_name = txn.name.replace('-', "_");
+        let has_params = !txn.parameters.is_empty();
+
+        output.push_str(&format!(
+            "// Transaction: {} (reactive={}, async={})\n",
+            txn.name, txn.is_reactive, txn.is_async
+        ));
+
+        if has_params {
+            let params_str = txn.parameters.iter()
+                .map(|(name, ty)| format!("{}: {}", name.replace('-', "_"), Self::get_rust_type_for_arm(ty, &None)))
+                .collect::<Vec<_>>()
+                .join(", ");
+            output.push_str(&format!("pub fn {}(state: &mut State, {}) -> u8 {{\n", fn_name, params_str));
+        } else {
+            output.push_str(&format!("pub fn {}(state: &mut State) -> u8 {{\n", fn_name));
+        }
+
+        output.push_str(&format!("    // Precondition: {:?}\n", txn.contract.pre_condition));
+        output.push_str("    // Postcondition: ");
+        output.push_str(&format!("{:?}\n", txn.contract.post_condition));
+
+        output.push_str("    let pre_ok = Self::check_precondition(\"\n");
+        output.push_str(&format!("        \"{:?}\"\n", txn.contract.pre_condition));
+        output.push_str("    );\n");
+        output.push_str("    if !pre_ok {\n");
+        output.push_str("        return ERR_CONDITION_FAILED;\n");
+        output.push_str("    }\n\n");
+
+        output.push_str("    // Save prior state for postcondition checking\n");
+        for (name, _, _, _) in state_decls {
+            let prior_name = format!("prior_{}", name.replace('-', "_"));
+            output.push_str(&format!("    let {} = state.{};\n", prior_name, name.replace('-', "_")));
+        }
+        output.push('\n');
+
+        output.push_str("    // Transaction body\n");
+        for stmt in &txn.body {
+            self.statement_to_arm(output, stmt);
+        }
+        output.push('\n');
+
+        output.push_str("    // Postcondition verification\n");
+        output.push_str("    let post_ok = Self::evaluate_postcondition(\n");
+        output.push_str(&format!("        \"{:?}\",\n", txn.contract.post_condition));
+        output.push_str("        state\n");
+        output.push_str("    );\n");
+        output.push_str("    if !post_ok {\n");
+        output.push_str("        // Rollback\n");
+        for (name, _, _, _) in state_decls {
+            let prior_name = format!("prior_{}", name.replace('-', "_"));
+            output.push_str(&format!("        state.{} = {};\n", name.replace('-', "_"), prior_name));
+        }
+        output.push_str("        return ERR_CONDITION_FAILED;\n");
+        output.push_str("    }\n\n");
+
+        output.push_str("    ERR_OK\n");
+        output.push_str("}\n\n");
+    }
+
+    fn statement_to_arm(&self, output: &mut String, stmt: &Statement) {
+        match stmt {
+            Statement::Assignment { lhs, expr, .. } => {
+                let rhs_code = self.expr_to_arm_value(expr);
+                output.push_str("    // Assignment: ");
+                output.push_str(&format!("{:?} = {:?}\n", lhs, expr));
+
+                if let Expr::Identifier(name) = lhs {
+                    output.push_str(&format!("    state.{} = {};\n", name.replace('-', "_"), rhs_code));
+                } else if let Expr::FieldAccess(obj, field) = lhs {
+                    let obj_code = self.expr_to_arm_value(obj);
+                    let field_name = field.replace('-', "_");
+                    output.push_str(&format!("    // Field access: {}.{} = {}\n", obj_code, field_name, rhs_code));
+                }
+            }
+            Statement::Term(exprs) => {
+                output.push_str("    // Terminate transaction\n");
+                for (i, expr) in exprs.iter().enumerate() {
+                    if let Some(e) = expr {
+                        let code = self.expr_to_arm_value(e);
+                        output.push_str(&format!("    // term output {}: {}\n", i, code));
+                    }
+                }
+                output.push_str("    return ERR_OK;\n");
+            }
+            Statement::Guarded { condition, statements } => {
+                output.push_str("    // Guarded block: [");
+                output.push_str(&format!("{:?}]\n", condition));
+                let cond_code = self.expr_to_arm_value(condition);
+                output.push_str(&format!("    if {} {{\n", cond_code));
+                for s in statements {
+                    self.statement_to_arm(output, s);
+                }
+                output.push_str("    }\n");
+            }
+            Statement::Expression(expr) => {
+                let code = self.expr_to_arm_value(expr);
+                output.push_str(&format!("    // Expression statement: {}\n", code));
+            }
+            Statement::Unification { name, pattern, expr } => {
+                output.push_str("    // Unification: ");
+                output.push_str(&format!("{}({}) = {:?}\n", name, pattern, expr));
+                let expr_code = self.expr_to_arm_value(expr);
+                output.push_str(&format!("    // Note: Unification not fully supported in ARM mode\n"));
+            }
+            Statement::Escape(expr) => {
+                output.push_str("    // Escape: ");
+                if let Some(e) = expr {
+                    let code = self.expr_to_arm_value(e);
+                    output.push_str(&format!("{}\n", code));
+                } else {
+                    output.push_str("escape\n");
+                }
+            }
+            Statement::Let { name, ty, expr, address, bit_range, .. } => {
+                let rust_type = Self::get_rust_type_for_arm(ty.as_ref().unwrap_or(&Type::UInt), bit_range);
+                output.push_str(&format!("    // Let binding: {}: {:?}\n", name, ty));
+
+                if let Some(e) = expr {
+                    let code = self.expr_to_arm_value(e);
+                    output.push_str(&format!("    let {}: {} = {};\n", name.replace('-', "_"), rust_type, code));
+                } else {
+                    output.push_str(&format!("    let {}: {};\n", name.replace('-', "_"), rust_type));
+                }
+
+                if let Some(addr) = address {
+                    output.push_str(&format!("    // Address: 0x{:08X}\n", addr));
+                }
+            }
+        }
+    }
+
+    fn expr_to_arm_value(&self, expr: &Expr) -> String {
+        match expr {
+            Expr::Integer(n) => format!("{}", n),
+            Expr::Bool(true) => "true".to_string(),
+            Expr::Bool(false) => "false".to_string(),
+            Expr::String(s) => format!("\"{}\"", s),
+            Expr::Identifier(name) => {
+                name.replace('-', "_")
+            }
+            Expr::PriorState(name) => {
+                format!("prior_{}", name.replace('-', "_"))
+            }
+            Expr::Add(a, b) => {
+                let a_val = self.expr_to_arm_value(a);
+                let b_val = self.expr_to_arm_value(b);
+                format!("({} + {})", a_val, b_val)
+            }
+            Expr::Sub(a, b) => {
+                let a_val = self.expr_to_arm_value(a);
+                let b_val = self.expr_to_arm_value(b);
+                format!("({} - {})", a_val, b_val)
+            }
+            Expr::Mul(a, b) => {
+                let a_val = self.expr_to_arm_value(a);
+                let b_val = self.expr_to_arm_value(b);
+                format!("({} * {})", a_val, b_val)
+            }
+            Expr::Div(a, b) => {
+                let a_val = self.expr_to_arm_value(a);
+                let b_val = self.expr_to_arm_value(b);
+                format!("({} / {})", a_val, b_val)
+            }
+            Expr::Eq(a, b) => {
+                let a_val = self.expr_to_arm_value(a);
+                let b_val = self.expr_to_arm_value(b);
+                format!("({} == {})", a_val, b_val)
+            }
+            Expr::Ne(a, b) => {
+                let a_val = self.expr_to_arm_value(a);
+                let b_val = self.expr_to_arm_value(b);
+                format!("({} != {})", a_val, b_val)
+            }
+            Expr::Lt(a, b) => {
+                let a_val = self.expr_to_arm_value(a);
+                let b_val = self.expr_to_arm_value(b);
+                format!("({} < {})", a_val, b_val)
+            }
+            Expr::Le(a, b) => {
+                let a_val = self.expr_to_arm_value(a);
+                let b_val = self.expr_to_arm_value(b);
+                format!("({} <= {})", a_val, b_val)
+            }
+            Expr::Gt(a, b) => {
+                let a_val = self.expr_to_arm_value(a);
+                let b_val = self.expr_to_arm_value(b);
+                format!("({} > {})", a_val, b_val)
+            }
+            Expr::Ge(a, b) => {
+                let a_val = self.expr_to_arm_value(a);
+                let b_val = self.expr_to_arm_value(b);
+                format!("({} >= {})", a_val, b_val)
+            }
+            Expr::And(a, b) => {
+                let a_val = self.expr_to_arm_value(a);
+                let b_val = self.expr_to_arm_value(b);
+                format!("({} && {})", a_val, b_val)
+            }
+            Expr::Or(a, b) => {
+                let a_val = self.expr_to_arm_value(a);
+                let b_val = self.expr_to_arm_value(b);
+                format!("({} || {})", a_val, b_val)
+            }
+            Expr::Not(e) => {
+                let val = self.expr_to_arm_value(e);
+                format!("!{}", val)
+            }
+            Expr::Neg(e) => {
+                let val = self.expr_to_arm_value(e);
+                format!("-{}", val)
+            }
+            Expr::BitNot(e) => {
+                let val = self.expr_to_arm_value(e);
+                format!("!{}", val)
+            }
+            Expr::FieldAccess(obj, field) => {
+                let obj_code = self.expr_to_arm_value(obj);
+                format!("{}.{}", obj_code, field)
+            }
+            Expr::Call(name, args) => {
+                let args_str = args.iter()
+                    .map(|a| self.expr_to_arm_value(a))
+                    .collect::<Vec<_>>()
+                    .join(", ");
+                format!("{}({})", name.replace('-', "_"), args_str)
+            }
+            Expr::ListLiteral(items) => {
+                let items_str = items.iter()
+                    .map(|i| self.expr_to_arm_value(i))
+                    .collect::<Vec<_>>()
+                    .join(", ");
+                format!("[{}]", items_str)
+            }
+            Expr::ListIndex(obj, idx) => {
+                let obj_code = self.expr_to_arm_value(obj);
+                let idx_code = self.expr_to_arm_value(idx);
+                format!("{}[{}]", obj_code, idx_code)
+            }
+            Expr::ListLen(obj) => {
+                let obj_code = self.expr_to_arm_value(obj);
+                format!("{}.len()", obj_code)
+            }
+            Expr::Slice { value, start, end, .. } => {
+                let val_code = self.expr_to_arm_value(value);
+                let start_code = start.as_ref().map(|e| self.expr_to_arm_value(e)).unwrap_or_else(|| "0".to_string());
+                let end_code = end.as_ref().map(|e| self.expr_to_arm_value(e)).unwrap_or_else(|| "usize::MAX".to_string());
+                format!("{}[{}..{}]", val_code, start_code, end_code)
+            }
+            _ => {
+                format!("/* {:?} */ 0", expr)
+            }
+        }
     }
 
     fn get_rust_type_for_arm(ty: &Type, bit_range: &Option<BitRange>) -> String {

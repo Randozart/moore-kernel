@@ -1,6 +1,7 @@
 // Moore Kernel - Bare-metal OS for Xilinx KV260
 
 let uptime: UInt = 0;
+let tick_count: UInt = 0;
 let mounted_count: UInt = 0;
 let fence_active: Bool = false;
 
