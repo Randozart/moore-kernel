@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
     "brief-compiler",
+    "brief-control/bvc",
 ]
 
 [workspace.package]

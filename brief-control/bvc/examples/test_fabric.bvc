@@ -1,0 +1,6 @@
+using Imp_Core;
+
+control Fabric {
+    target Tile_0;
+    partition Imp_Core across Tile_0;
+}

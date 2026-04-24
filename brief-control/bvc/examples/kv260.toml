@@ -1,0 +1,19 @@
+[ebv]
+board = "Xilinx Kria KV260"
+soc = "Zynq UltraScale+ MPSoC (XCZU3CG-SFVC784)"
+
+[ebv.partitions]
+RP_0 = { cells = 40000, name = "kernel_ops" }
+RP_1 = { cells = 80000, name = "app_slot_1" }
+RP_2 = { cells = 80000, name = "app_slot_2" }
+RP_3 = { cells = 40000, name = "reserved" }
+
+[ebv.tethers]
+fabric_discovery = { type = "discovery", query = "SELECT tile_id, lut_count FROM tiles" }
+mount_status = { type = "status", query = "SELECT slot, bitstream_name FROM mounts" }
+
+[ebv.moats]
+moat_RP_0 = { width = "4_LUTs" }
+moat_RP_1 = { width = "4_LUTs" }
+moat_RP_2 = { width = "4_LUTs" }
+moat_RP_3 = { width = "4_LUTs" }

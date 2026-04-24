@@ -1,0 +1,54 @@
+[ebv]
+board = "Xilinx Kria KV260"
+soc = "Zynq UltraScale+ MPSoC (XCZU3CG-SFVC784)"
+description = "Embedded Brief for Moore Kernel — the genesis bitstream for the Moore Tile"
+
+[ebv.clocks]
+cpu_clk = { hz = 1_200_000_000, description = "ARM Cortex-A53 @ 1.2 GHz" }
+pl_clk = { hz = 150_000_000, description = "PL fabric @ 150 MHz" }
+emio_clk = { hz = 1_000_000, description = "EMIO / slow I/O" }
+hdmi_clk = { hz = 25_175_000, description = "HDMI pixel clock (640x480@60Hz)" }
+
+[ebv.memory]
+dram0 = { base = "0x0000_0000", size = "2_GiB", description = "DDR4 — main system memory" }
+ocm = { base = "0xFFF0_0000", size = "256_KiB", description = "On-chip memory — for brief boot" }
+sram = { base = "0xFFE0_0000", size = "128_KiB", description = "L2 cache / tightly-coupled SRAM" }
+
+[ebv.partitions]
+RP_0 = { cells = 40000, name = "kernel_ops", description = "Moore Kernel operations" }
+RP_1 = { cells = 80000, name = "app_slot_1", description = "Application bitstream" }
+RP_2 = { cells = 80000, name = "app_slot_2", description = "Application bitstream" }
+RP_3 = { cells = 40000, name = "reserved", description = "Expansion slot" }
+
+[ebv.static_regions]
+SHELL_NOC = { region = "AXI NoC + memory controllers" }
+SHELL_DEC = { region = "DFX Decouplers + config ports" }
+SHELL_PERIPH = { region = "HDMI, GEM0, SDIO, USB" }
+
+[ebv.io]
+uart0 = { base = "0xFF000000", size = "4_KiB", description = "UART0 — msh console" }
+pcap = { base = "0xFF0A0000", size = "16_KiB", description = "PCAP — bitstream configuration" }
+gpio = { base = "0xFF0B0000", size = "4_KiB", description = "GPIO — LED control, button input" }
+sdio = { base = "0xFF0C0000", size = "64_KiB", description = "SDIO — SD card controller" }
+ddr_ctrl = { base = "0xF8000000", size = "1_MiB", description = "DDR controller registers" }
+
+[ebv.tethers]
+kernel_version = { type = "kernel", query = "SELECT version, build_date FROM kernel_info" }
+fabric_state = { type = "fabric", query = "SELECT tile_id, state, mounted_bitstream FROM fabric" }
+memory_usage = { type = "memory", query = "SELECT region, used_bytes, total_bytes FROM memory_map" }
+mount_table = { type = "mount", query = "SELECT slot, bitstream_name, active, lut_count FROM mounts" }
+storage_list = { type = "storage", query = "SELECT filename, size, verified FROM sdcard WHERE present = true" }
+fence_status = { type = "security", query = "SELECT fence_id, active, mode FROM fences" }
+pcap_status = { type = "hardware", query = "SELECT pcap_busy, last_error, bits_loaded FROM pcap" }
+predicate_registry = { type = "msh", query = "SELECT subject, predicate, handler FROM predicate_handlers" }
+
+[ebv.security]
+puf = { scheme = "AES-256", key_source = "silicon_delay_characteristics", keystore = "efuse_only" }
+multi_tenant = true
+leakage_contracts_required = true
+
+[ebv.moats]
+moat_RP_0 = { width = "4_LUTs" }
+moat_RP_1 = { width = "4_LUTs" }
+moat_RP_2 = { width = "4_LUTs" }
+moat_RP_3 = { width = "4_LUTs" }
