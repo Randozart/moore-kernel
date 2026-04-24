@@ -1,3 +1,9 @@
+// security/lib.rs - Moore Kernel Security Subsystem
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// PUF (Physically Unclonable Function) root of trust, active fences,
+// and APAC (Active Partition Access Control) security features
+
 #![no_std]
 
 pub const PUF_NOT_READY: u8 = 0x31;

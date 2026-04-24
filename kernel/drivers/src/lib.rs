@@ -1,3 +1,9 @@
+// drivers/lib.rs - PCAP Driver for FPGA Configuration
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// PCAP (Programmable Configuration Access Port) driver for
+// configuring Xilinx Zynq UltraScale+ MPSoC FPGA fabric
+
 #![no_std]
 
 use core::ptr::{read_volatile, write_volatile};

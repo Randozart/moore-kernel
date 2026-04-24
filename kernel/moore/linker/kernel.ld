@@ -1,5 +1,8 @@
-/* Linker script for Moore Kernel on KV260 (Zynq UltraScale+) */
-/* Target: ARM Cortex-A53 @ 1.2 GHz */
+/* kernel.ld - Linker script for Moore Kernel on KV260
+ *     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+ *
+ * Target: ARM Cortex-A53 @ 1.2 GHz, Zynq UltraScale+ MPSoC
+ */
 
 OUTPUT_FORMAT("elf64-littleaarch64")
 OUTPUT_ARCH(aarch64)

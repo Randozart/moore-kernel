@@ -1,3 +1,8 @@
+// bvc/writ.rs - BVC Binary Format Writer
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// Writes .writ binary files from BVC programs
+
 use crate::{BvcProgram, ControlBlock, ControlStmt, EbvData, PartitionDef, TimeoutUnit};
 use anyhow::Result;
 use serde::{Deserialize, Serialize};

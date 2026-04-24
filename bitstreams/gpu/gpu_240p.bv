@@ -1,4 +1,7 @@
-// GPU 240p - Simplified Rendered Brief GPU
+// gpu_240p.bv - GPU Bitstream Specification
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// Simplified Rendered Brief GPU
 // Target: Xilinx Kria KV260
 // Generates 640x480 @ 60Hz video output
 

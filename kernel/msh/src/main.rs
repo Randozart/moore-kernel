@@ -1,3 +1,8 @@
+// msh/main.rs - Moore Shell CLI Entry Point
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// Moore Shell - Command-line interface for Moore Kernel management
+
 use anyhow::Result;
 use crate::parser::{parse_line, format_proposition, Proposition};
 use crate::tether::{TetherEngine, PropositionalContext};

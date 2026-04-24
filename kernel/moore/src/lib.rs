@@ -1,3 +1,9 @@
+// moore/lib.rs - Moore Kernel Library
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// Moore Kernel - Bare-metal OS treating FPGA bitstreams as
+// first-class physical processes on Xilinx KV260
+
 #![no_std]
 #![no_main]
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 sign.py - Bitstream signing and encryption for Moore Kernel
+    Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
 
 Usage:
     python tools/sign.py --input <writ_file> --output <signed_file>

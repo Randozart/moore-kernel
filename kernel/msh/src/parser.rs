@@ -1,3 +1,8 @@
+// msh/parser.rs - Moore Shell LL(1) Parser
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// Lexer and parser for Moore Shell command language
+
 use anyhow::{bail, Result};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;

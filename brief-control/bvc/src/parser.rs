@@ -1,3 +1,8 @@
+// bvc/parser.rs - BVC Language Parser
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// Tokenizer and parser for Brief Control orchestration language
+
 use crate::{ControlBlock, ControlStmt, EbvData, PartitionDef};
 use anyhow::{bail, Result};
 

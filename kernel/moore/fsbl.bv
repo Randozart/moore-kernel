@@ -1,4 +1,6 @@
-// FSBL.bv - First Stage Boot Loader for Moore Kernel
+// fsbl.bv - First Stage Boot Loader for Moore Kernel
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
 // Runs from OCM (0xFFF0_0000) before DDR is available
 // Feeds into boot.rs which initializes clocks/DDR
 

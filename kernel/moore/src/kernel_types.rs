@@ -1,3 +1,8 @@
+// moore/kernel_types.rs - Moore Kernel Core Data Types
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// Core data structures: TileInfo, MountInfo, FenceInfo, FenceManager
+
 pub struct TileInfo {
     pub tile_id: u32,
     pub lut_count: u32,

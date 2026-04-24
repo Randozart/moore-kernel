@@ -1,3 +1,6 @@
+// main.bv - Moore Kernel Main Specification
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
 // Moore Kernel - Bare-metal OS for Xilinx KV260
 
 let uptime: UInt = 0;

@@ -1,3 +1,8 @@
+// bvc/main.rs - BVC Compiler CLI Entry Point
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// Command-line interface for the Brief Control orchestration compiler
+
 use anyhow::{Context, Result};
 use std::path::PathBuf;
 use bvc_compiler::compile_bvc;

@@ -1,4 +1,5 @@
 //! Brief FFI Native Implementations
+//!     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
 //!
 //! This crate contains the Rust implementations for all Brief foreign functions.
 //! Each function follows the pattern: takes basic types, returns Result<Output, ErrorType>

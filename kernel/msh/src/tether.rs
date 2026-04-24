@@ -1,3 +1,8 @@
+// msh/tether.rs - Moore Shell Tether Engine
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// Tether engine for querying Moore Kernel state
+
 use anyhow::{bail, Result};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;

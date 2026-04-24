@@ -1,3 +1,8 @@
+// bvc/validator.rs - BVC Program Validator
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// Validates BVC programs against EBV hardware descriptions
+
 use crate::{BvcProgram, EbvData};
 use anyhow::{bail, Result};
 

@@ -1,4 +1,6 @@
 # build_static_shell.tcl - Build static shell for Xilinx KV260
+#     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+#
 # Usage: vivado -mode batch -source build_static_shell.tcl -tclargs <project_dir>
 #
 # This creates the static shell bitstream with:

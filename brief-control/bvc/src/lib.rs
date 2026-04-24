@@ -1,3 +1,9 @@
+// bvc/lib.rs - BVC Compiler Library for Brief Control Orchestration
+//     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+//
+// BVC compiles .bvc orchestration files into .writ binary format
+// for controlling bitstream mounting, partitioning, and tethering
+
 use anyhow::{Context, Result};
 use std::collections::HashMap;
 use std::path::Path;

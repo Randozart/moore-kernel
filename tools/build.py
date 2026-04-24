@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 build.py - Unified build script for Moore Kernel
+    Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
 
 Usage:
     python tools/build.py --all

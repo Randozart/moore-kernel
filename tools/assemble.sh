@@ -1,5 +1,7 @@
 #!/bin/bash
 # assemble.sh - Assemble Moore Kernel from Brief to ARM ELF
+#     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+#
 # Usage: ./assemble.sh <kernel.bv> [--out <dir>]
 #
 # Prerequisites:

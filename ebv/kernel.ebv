@@ -1,5 +1,9 @@
+# kernel.ebv - Moore Kernel Hardware Description
+#     Copyright (C) 2026 Randy Smits-Schreuder Goedheijt
+#
+# Embedded Brief for Moore Kernel — the genesis bitstream for the Moore Tile
+
 [ebv]
-board = "Xilinx Kria KV260"
 soc = "Zynq UltraScale+ MPSoC (XCZU3CG-SFVC784)"
 description = "Embedded Brief for Moore Kernel — the genesis bitstream for the Moore Tile"
 
