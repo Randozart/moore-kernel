@@ -1,7 +1,7 @@
 {
   "name": "brief-language",
   "displayName": "Brief Language",
-  "description": "Syntax highlighting, folding, bracket colorization, and intelligent editing for Brief (.bv), Rendered Brief (.rbv), and Embedded Brief (.ebv) files",
+  "description": "Syntax highlighting, folding, bracket colorization, and intelligent editing for Brief (.bv), Rendered Brief (.rbv), Embedded Brief (.ebv), Brief Control (.bvc), and Writ of Execution (.writ) files",
   "version": "0.1.0",
   "publisher": "randozart",
   "icon": "images/extension-logo.svg",
@@ -9,7 +9,9 @@
   "activationEvents": [
     "onLanguage:brief",
     "onLanguage:rbv",
-    "onLanguage:ebv"
+    "onLanguage:ebv",
+    "onLanguage:bvc",
+    "onLanguage:writ"
   ],
   "engines": {
     "vscode": "^1.60.0"
@@ -62,6 +64,36 @@
         "icon": {
           "light": "./images/e-brief-logo.svg",
           "dark": "./images/e-brief-logo.svg"
+        },
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "bvc",
+        "aliases": [
+          "Brief Control",
+          "brief-control"
+        ],
+        "extensions": [
+          ".bvc"
+        ],
+        "icon": {
+          "light": "./images/brief-logo.svg",
+          "dark": "./images/brief-logo.svg"
+        },
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "writ",
+        "aliases": [
+          "Writ of Execution",
+          "writ"
+        ],
+        "extensions": [
+          ".writ"
+        ],
+        "icon": {
+          "light": "./images/moore-seal.svg",
+          "dark": "./images/moore-seal.svg"
         },
         "configuration": "./language-configuration.json"
       }
