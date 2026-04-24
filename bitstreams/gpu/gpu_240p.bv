@@ -1,0 +1,72 @@
+# Rendered Brief GPU — 640x480 @ 60Hz
+# Target: Xilinx Kria KV260 (Zynq UltraScale+ MPSoC)
+# This file is the source for the first mounted bitstream in the MVP
+
+contract gpu_240p(output resolution: Resolution, pixel_clock: Clock) {
+    pre resolution.width == 640
+    pre resolution.height == 480
+    pre pixel_clock.freq == 25_175_000
+    post result.is_verified == true
+}
+
+rendered gpu_240p {
+    # Hardware parameters
+    output resolution: 640x480 @ 60Hz;
+    pixel_clock: 25.175 MHz;
+
+    # Framebuffer in Block RAM
+    # 640 * 480 pixels * 4 bytes (BGRA) = 1,228,800 bytes
+    # Using 4 BRAM36K tiles (configured in UB)
+    framebuffer BRAM: 640 * 480 * 4 bytes;
+
+    # AXI4-Stream input from Moore Kernel
+    input pixel_stream: AXI4Stream<Pixel>,
+    input ctrl_stream: AXI4Stream<Ctrl>;
+
+    # HDMI output signals
+    output video_out: HDMI_TMDS;
+
+    # State machine
+    state mode: (STANDBY, RENDER, CLEAR);
+
+    rstruct Pixel {
+        r: 8,
+        g: 8,
+        b: 8,
+        a: 8
+    }
+
+    rstruct Ctrl {
+        cmd: 8,        # 0x01 = RENDER, 0x02 = CLEAR, 0x00 = IDLE
+        x: 16,        # starting X coordinate
+        y: 16         # starting Y coordinate
+    }
+
+    view {
+        div id="frame" {
+            style: "width: 640px; height: 480px; background: black;"
+        }
+        div id="overlay" {
+            style: "position: absolute; top: 0; left: 0;"
+        }
+    }
+
+    # Tick function: called every clock cycle
+    fn tick(pixel_clock: Clock) -> void {
+        match ctrl_stream.rx.cmd {
+            0x01 => self.mode = RENDER,
+            0x02 => self.mode = CLEAR,
+            _    => self.mode = STANDBY
+        }
+    }
+
+    # Safety: no unhandled states
+    ensure ctrl_stream.rx.cmd in { 0x00, 0x01, 0x02 };
+}
+
+leakage contract gpu_240p {
+    secret: [framebuffer_contents, pending_writes];
+    observable: [pixel_clock_timing, bram_access_pattern];
+    guarantee: secret does_not_flow_to pixel_clock_timing;
+    guarantee: secret does_not_flow_to bram_access_pattern;
+}

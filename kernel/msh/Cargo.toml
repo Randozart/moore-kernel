@@ -1,0 +1,6 @@
+[package]
+name = "moore-shell"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]

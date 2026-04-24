@@ -1,0 +1,6 @@
+[package]
+name = "brief-ctrl-orchestrator"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]

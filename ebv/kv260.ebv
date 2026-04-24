@@ -1,0 +1,113 @@
+# Embedded Brief for Xilinx Kria KV260
+# Genesis Block — the "birth certificate" of this Moore Tile
+# Revision: 0.1.0
+# Date: 2026-04-24
+
+ebv kv260 {
+    board: "Xilinx Kria KV260 Vision AI Starter Kit";
+    soc: "Zynq UltraScale+ MPSoC (XCZU3CG-SFVC784)";
+    fab: 16nm;
+
+    # Physical clock tree
+    clocks {
+        cpu_clk:    1_200_000_000 Hz;   # ARM Cortex-A53 @ 1.2 GHz
+        pl_clk:       150_000_000 Hz;   # PL fabric @ 150 MHz (nominal)
+        emio_clk:      1_000_000 Hz;   # EMIO / slow I/O
+        sdio_clk:     50_000_000 Hz;   # SDIO
+        gem0_clk:    125_000_000 Hz;   # Gigabit Ethernet RGMII
+        hdmi_clk:     25_175_000 Hz;   # HDMI pixel clock (640x480@60Hz)
+    }
+
+    # DDR4 memory map
+    memory {
+        dram0: base 0x000_0000 size 2_GiB;   # DDR4 — main system memory
+        ocm:   base 0xFFF_0000 size 256_KiB;   # On-chip memory — for brief boot
+    }
+
+    # Reconfigurable Partition boundaries (pre-floorplanned)
+    partitions {
+        RP_0: origin (0,0)      size (50,50)   cells 40_000  name "kernel_ops";
+        RP_1: origin (50,0)     size (100,50)  cells 80_000  name "app_slot_1";
+        RP_2: origin (150,0)    size (100,50)  cells 80_000  name "app_slot_2";
+        RP_3: origin (0,50)     size (50,25)   cells 40_000  name "reserved";
+    }
+
+    # Static shell regions (never reconfigurable)
+    static_regions {
+        SHELL_NOC:      region (0,75) size (250,25);   # AXI NoC + memory controllers
+        SHELL_DEC:      region (0,0)  size (25,75);    # DFX Decouplers + config ports
+        SHELL_PERIPH:   region (175,75) size (75,25);  # HDMI, GEM0, SDIO, USB
+    }
+
+    # Transceiver / network
+    network {
+        gem0: {
+            standard: RGMII;
+            speed: 1_Gbps;
+            pins: { mdio, mdc, txd[4], rxd[4], txen, rxen, col, crs };
+        };
+        aurora_lanes: [
+            { name: "aurora_0", lanes: 1, max_rate: 10_Gbps, media: "SFP+" },
+            { name: "aurora_1", lanes: 1, max_rate: 10_Gbps, media: "SFP+" }
+        ];
+    }
+
+    # HDMI output (DisplayPort over USB-C)
+    video {
+        hdmi_tx: {
+            standard: HDMI_2_0;
+            max_resolution: 3840x2160 @ 60Hz;
+            pins: { tmds[12], clk, CEC, HPD };
+        };
+    }
+
+    # SD card storage interface
+    storage {
+        sd0: {
+            standard: SDIO_3_0;
+            pins: { cmd, clk, dat[8] };
+            boot_device: true;
+        };
+    }
+
+    # JTAG (locked after programming — no external access)
+    jtag: { enabled: false; after: "first_boot"; };
+
+    # Brief Control tethers — these expose hardware state to msh
+    tethers {
+        fabric_discovery: {
+            type: discovery;
+            query: "SELECT tile_id, lut_count, dsp_count, bram_mb FROM tiles WHERE connected = true";
+        };
+        mount_status: {
+            type: status;
+            query: "SELECT slot, bitstream_name, active FROM mounts WHERE tile_id = 0";
+        };
+        storage_contents: {
+            type: storage;
+            query: "SELECT filename, size, verified FROM sdcard WHERE present = true";
+        };
+    }
+
+    # PUF configuration — derived at first boot, never stored in plaintext
+    puf: {
+        scheme: "AES-256";
+        key_source: "silicon_delay_characteristics";
+        keystore: "efuse_only";       # Key never exposed to software layer
+    };
+
+    # Active fence zones (moats around each RP)
+    moats {
+        moat_RP_0: surrounding RP_0 width 4_LUTs;
+        moat_RP_1: surrounding RP_1 width 4_LUTs;
+        moat_RP_2: surrounding RP_2 width 4_LUTs;
+        moat_RP_3: surrounding RP_3 width 4_LUTs;
+    }
+
+    # Security posture
+    security {
+        multi_tenant: true;
+        leakage_contracts_required: true;
+        blanking_bitstream_enforced: true;
+    }
+}

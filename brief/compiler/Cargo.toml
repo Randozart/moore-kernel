@@ -1,0 +1,6 @@
+[package]
+name = "brief-compiler"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
