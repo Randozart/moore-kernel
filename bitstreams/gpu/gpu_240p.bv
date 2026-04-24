@@ -1,72 +1,92 @@
-# Rendered Brief GPU — 640x480 @ 60Hz
-# Target: Xilinx Kria KV260 (Zynq UltraScale+ MPSoC)
-# This file is the source for the first mounted bitstream in the MVP
+// GPU 240p - Simplified Rendered Brief GPU
+// Target: Xilinx Kria KV260
+// Generates 640x480 @ 60Hz video output
 
-contract gpu_240p(output resolution: Resolution, pixel_clock: Clock) {
-    pre resolution.width == 640
-    pre resolution.height == 480
-    pre pixel_clock.freq == 25_175_000
-    post result.is_verified == true
-}
+let pixel_x: UInt = 0;
+let pixel_y: UInt = 0;
+let frame_count: UInt = 0;
+let cmd_register: UInt = 0;
+let status_register: UInt = 0;
+let framebuffer_offset: UInt = 0;
 
-rendered gpu_240p {
-    # Hardware parameters
-    output resolution: 640x480 @ 60Hz;
-    pixel_clock: 25.175 MHz;
+// Command values
+let CMD_IDLE: UInt = 0;
+let CMD_RENDER: UInt = 1;
+let CMD_CLEAR: UInt = 2;
 
-    # Framebuffer in Block RAM
-    # 640 * 480 pixels * 4 bytes (BGRA) = 1,228,800 bytes
-    # Using 4 BRAM36K tiles (configured in UB)
-    framebuffer BRAM: 640 * 480 * 4 bytes;
+// Status values
+let STATUS_IDLE: UInt = 0;
+let STATUS_BUSY: UInt = 1;
 
-    # AXI4-Stream input from Moore Kernel
-    input pixel_stream: AXI4Stream<Pixel>,
-    input ctrl_stream: AXI4Stream<Ctrl>;
+// Initialize GPU
+rct txn gpu_init [true]
+  [pixel_x == 0 && pixel_y == 0 && frame_count == 0]
+{
+  &pixel_x = 0;
+  &pixel_y = 0;
+  &frame_count = 0;
+  &cmd_register = CMD_IDLE;
+  &status_register = STATUS_IDLE;
+  &framebuffer_offset = 0;
+  term;
+};
 
-    # HDMI output signals
-    output video_out: HDMI_TMDS;
+// Handle render command
+rct txn do_render [status_register == STATUS_IDLE]
+  [status_register == STATUS_BUSY || cmd_register == CMD_IDLE]
+{
+  &cmd_register = CMD_IDLE;
+  &status_register = STATUS_BUSY;
+  term;
+};
 
-    # State machine
-    state mode: (STANDBY, RENDER, CLEAR);
+// Handle clear command
+rct txn do_clear [status_register == STATUS_IDLE]
+  [status_register == STATUS_IDLE && pixel_x == 0 && pixel_y == 0]
+{
+  &pixel_x = 0;
+  &pixel_y = 0;
+  &status_register = STATUS_IDLE;
+  term;
+};
 
-    rstruct Pixel {
-        r: 8,
-        g: 8,
-        b: 8,
-        a: 8
-    }
+// Advance pixel position (called every pixel clock)
+rct txn tick_pixel [true]
+  [pixel_x == @pixel_x + 1 || (pixel_x == 639 && pixel_y == @pixel_y + 1) || (pixel_x == 639 && pixel_y == 479 && frame_count == @frame_count + 1)]
+{
+  &pixel_x = pixel_x + 1;
+  term;
+};
 
-    rstruct Ctrl {
-        cmd: 8,        # 0x01 = RENDER, 0x02 = CLEAR, 0x00 = IDLE
-        x: 16,        # starting X coordinate
-        y: 16         # starting Y coordinate
-    }
+// Reset to start of line
+rct txn next_line [pixel_x >= 640]
+  [pixel_x == 0 && pixel_y == @pixel_y + 1]
+{
+  &pixel_x = 0;
+  term;
+};
 
-    view {
-        div id="frame" {
-            style: "width: 640px; height: 480px; background: black;"
-        }
-        div id="overlay" {
-            style: "position: absolute; top: 0; left: 0;"
-        }
-    }
+// Reset to start of frame
+rct txn next_frame [pixel_y >= 480]
+  [pixel_x == 0 && pixel_y == 0 && frame_count == @frame_count + 1]
+{
+  &pixel_x = 0;
+  &pixel_y = 0;
+  &frame_count = frame_count + 1;
+  term;
+};
 
-    # Tick function: called every clock cycle
-    fn tick(pixel_clock: Clock) -> void {
-        match ctrl_stream.rx.cmd {
-            0x01 => self.mode = RENDER,
-            0x02 => self.mode = CLEAR,
-            _    => self.mode = STANDBY
-        }
-    }
+// Complete render operation
+rct txn finish_render [status_register == STATUS_BUSY]
+  [status_register == STATUS_IDLE]
+{
+  &status_register = STATUS_IDLE;
+  term;
+};
 
-    # Safety: no unhandled states
-    ensure ctrl_stream.rx.cmd in { 0x00, 0x01, 0x02 };
-}
-
-leakage contract gpu_240p {
-    secret: [framebuffer_contents, pending_writes];
-    observable: [pixel_clock_timing, bram_access_pattern];
-    guarantee: secret does_not_flow_to pixel_clock_timing;
-    guarantee: secret does_not_flow_to bram_access_pattern;
-}
+// Get status (for tether query)
+rct txn get_status [true]
+  [status_register == @status_register]
+{
+  term;
+};
