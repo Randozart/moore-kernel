@@ -1,0 +1,1480 @@
+# Standard Math Bindings
+# Provides mathematical operations
+
+[[functions]]
+name = "__sin"
+location = "brief_ffi_native::__sin"
+target = "native"
+mapper = "rust"
+description = "Sine of angle in radians"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __sin - WASM implementation
+# ==================================================
+[[functions]]
+name = "__sin"
+location = "__sin"
+target = "wasm"
+mapper = "wasm"
+description = "Sine of angle in radians (WASM)"
+wasm_impl = """function __sin(x) { return Math.sin(x); }"""
+
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__cos"
+location = "brief_ffi_native::__cos"
+target = "native"
+mapper = "rust"
+description = "Cosine of angle in radians"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __cos - WASM implementation
+# ==================================================
+[[functions]]
+name = "__cos"
+location = "__cos"
+target = "wasm"
+mapper = "wasm"
+description = "Cosine of angle in radians (WASM)"
+wasm_impl = """function __cos(x) { return Math.cos(x); }"""
+
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__tan"
+location = "brief_ffi_native::__tan"
+target = "native"
+mapper = "rust"
+description = "Tangent of angle in radians"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __tan - WASM implementation
+# ==================================================
+[[functions]]
+name = "__tan"
+location = "__tan"
+target = "wasm"
+mapper = "wasm"
+description = "Tangent of angle in radians (WASM)"
+wasm_impl = """function __tan(x) { return Math.tan(x); }"""
+
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__asin"
+location = "brief_ffi_native::__asin"
+target = "native"
+mapper = "rust"
+description = "Arcsine"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __asin - WASM implementation
+# ==================================================
+[[functions]]
+name = "__asin"
+location = "__asin"
+target = "wasm"
+mapper = "wasm"
+description = "Arcsine (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__acos"
+location = "brief_ffi_native::__acos"
+target = "native"
+mapper = "rust"
+description = "Arccosine"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __acos - WASM implementation
+# ==================================================
+[[functions]]
+name = "__acos"
+location = "__acos"
+target = "wasm"
+mapper = "wasm"
+description = "Arccosine (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__atan"
+location = "brief_ffi_native::__atan"
+target = "native"
+mapper = "rust"
+description = "Arctangent"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __atan - WASM implementation
+# ==================================================
+[[functions]]
+name = "__atan"
+location = "__atan"
+target = "wasm"
+mapper = "wasm"
+description = "Arctangent (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__atan2"
+location = "brief_ffi_native::__atan2"
+target = "native"
+mapper = "rust"
+description = "Arctangent of y/x"
+
+[functions.input]
+y = "Float"
+x = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __atan2 - WASM implementation
+# ==================================================
+[[functions]]
+name = "__atan2"
+location = "__atan2"
+target = "wasm"
+mapper = "wasm"
+description = "Arctangent of y/x (WASM)"
+[functions.input]
+y = "Float"
+x = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__sinh"
+location = "brief_ffi_native::__sinh"
+target = "native"
+mapper = "rust"
+description = "Hyperbolic sine"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __sinh - WASM implementation
+# ==================================================
+[[functions]]
+name = "__sinh"
+location = "__sinh"
+target = "wasm"
+mapper = "wasm"
+description = "Hyperbolic sine (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__cosh"
+location = "brief_ffi_native::__cosh"
+target = "native"
+mapper = "rust"
+description = "Hyperbolic cosine"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __cosh - WASM implementation
+# ==================================================
+[[functions]]
+name = "__cosh"
+location = "__cosh"
+target = "wasm"
+mapper = "wasm"
+description = "Hyperbolic cosine (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__tanh"
+location = "brief_ffi_native::__tanh"
+target = "native"
+mapper = "rust"
+description = "Hyperbolic tangent"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __tanh - WASM implementation
+# ==================================================
+[[functions]]
+name = "__tanh"
+location = "__tanh"
+target = "wasm"
+mapper = "wasm"
+description = "Hyperbolic tangent (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__sqrt"
+location = "brief_ffi_native::__sqrt"
+target = "native"
+mapper = "rust"
+description = "Square root"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __sqrt - WASM implementation
+# ==================================================
+[[functions]]
+name = "__sqrt"
+location = "__sqrt"
+target = "wasm"
+mapper = "wasm"
+description = "Square root (WASM)"
+wasm_impl = """function __sqrt(x) { return Math.sqrt(x); }"""
+
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__cbrt"
+location = "brief_ffi_native::__cbrt"
+target = "native"
+mapper = "rust"
+description = "Cube root"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __cbrt - WASM implementation
+# ==================================================
+[[functions]]
+name = "__cbrt"
+location = "__cbrt"
+target = "wasm"
+mapper = "wasm"
+description = "Cube root (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__pow"
+location = "brief_ffi_native::__pow"
+target = "native"
+mapper = "rust"
+description = "Raise to power (float)"
+
+[functions.input]
+base = "Float"
+exp = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __pow - WASM implementation
+# ==================================================
+[[functions]]
+name = "__pow"
+location = "__pow"
+target = "wasm"
+mapper = "wasm"
+description = "Raise to power (float) (WASM)"
+wasm_impl = """function __pow(base, exp) { return Math.pow(base, exp); }"""
+
+[functions.input]
+base = "Float"
+exp = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__powi"
+location = "brief_ffi_native::__powi"
+target = "native"
+mapper = "rust"
+description = "Raise to power (int)"
+
+[functions.input]
+base = "Float"
+exp = "Int"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __powi - WASM implementation
+# ==================================================
+[[functions]]
+name = "__powi"
+location = "__powi"
+target = "wasm"
+mapper = "wasm"
+description = "Raise to power (int) (WASM)"
+[functions.input]
+base = "Float"
+exp = "Int"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__exp"
+location = "brief_ffi_native::__exp"
+target = "native"
+mapper = "rust"
+description = "e raised to power"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __exp - WASM implementation
+# ==================================================
+[[functions]]
+name = "__exp"
+location = "__exp"
+target = "wasm"
+mapper = "wasm"
+description = "e raised to power (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__exp2"
+location = "brief_ffi_native::__exp2"
+target = "native"
+mapper = "rust"
+description = "2 raised to power"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __exp2 - WASM implementation
+# ==================================================
+[[functions]]
+name = "__exp2"
+location = "__exp2"
+target = "wasm"
+mapper = "wasm"
+description = "2 raised to power (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__ln"
+location = "brief_ffi_native::__ln"
+target = "native"
+mapper = "rust"
+description = "Natural logarithm"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __ln - WASM implementation
+# ==================================================
+[[functions]]
+name = "__ln"
+location = "__ln"
+target = "wasm"
+mapper = "wasm"
+description = "Natural logarithm (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__log"
+location = "brief_ffi_native::__log"
+target = "native"
+mapper = "rust"
+description = "Logarithm with base"
+
+[functions.input]
+n = "Float"
+base = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __log - WASM implementation
+# ==================================================
+[[functions]]
+name = "__log"
+location = "__log"
+target = "wasm"
+mapper = "wasm"
+description = "Logarithm with base (WASM)"
+wasm_impl = """function __log(x) { return Math.log(x); }"""
+
+[functions.input]
+n = "Float"
+base = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__log2"
+location = "brief_ffi_native::__log2"
+target = "native"
+mapper = "rust"
+description = "Base 2 logarithm"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __log2 - WASM implementation
+# ==================================================
+[[functions]]
+name = "__log2"
+location = "__log2"
+target = "wasm"
+mapper = "wasm"
+description = "Base 2 logarithm (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__log10"
+location = "brief_ffi_native::__log10"
+target = "native"
+mapper = "rust"
+description = "Base 10 logarithm"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __log10 - WASM implementation
+# ==================================================
+[[functions]]
+name = "__log10"
+location = "__log10"
+target = "wasm"
+mapper = "wasm"
+description = "Base 10 logarithm (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__floor"
+location = "brief_ffi_native::__floor"
+target = "native"
+mapper = "rust"
+description = "Round down"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __floor - WASM implementation
+# ==================================================
+[[functions]]
+name = "__floor"
+location = "__floor"
+target = "wasm"
+mapper = "wasm"
+description = "Round down (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__ceil"
+location = "brief_ffi_native::__ceil"
+target = "native"
+mapper = "rust"
+description = "Round up"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __ceil - WASM implementation
+# ==================================================
+[[functions]]
+name = "__ceil"
+location = "__ceil"
+target = "wasm"
+mapper = "wasm"
+description = "Round up (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__round"
+location = "brief_ffi_native::__round"
+target = "native"
+mapper = "rust"
+description = "Round to nearest"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __round - WASM implementation
+# ==================================================
+[[functions]]
+name = "__round"
+location = "__round"
+target = "wasm"
+mapper = "wasm"
+description = "Round to nearest (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__trunc"
+location = "brief_ffi_native::__trunc"
+target = "native"
+mapper = "rust"
+description = "Truncate decimal"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __trunc - WASM implementation
+# ==================================================
+[[functions]]
+name = "__trunc"
+location = "__trunc"
+target = "wasm"
+mapper = "wasm"
+description = "Truncate decimal (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__fract"
+location = "brief_ffi_native::__fract"
+target = "native"
+mapper = "rust"
+description = "Fractional part"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __fract - WASM implementation
+# ==================================================
+[[functions]]
+name = "__fract"
+location = "__fract"
+target = "wasm"
+mapper = "wasm"
+description = "Fractional part (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__is_nan"
+location = "brief_ffi_native::__is_nan"
+target = "native"
+mapper = "rust"
+description = "Check if NaN"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Bool"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __is_nan - WASM implementation
+# ==================================================
+[[functions]]
+name = "__is_nan"
+location = "__is_nan"
+target = "wasm"
+mapper = "wasm"
+description = "Check if NaN (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Bool"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__is_infinite"
+location = "brief_ffi_native::__is_infinite"
+target = "native"
+mapper = "rust"
+description = "Check if infinite"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Bool"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __is_infinite - WASM implementation
+# ==================================================
+[[functions]]
+name = "__is_infinite"
+location = "__is_infinite"
+target = "wasm"
+mapper = "wasm"
+description = "Check if infinite (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Bool"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__is_finite"
+location = "brief_ffi_native::__is_finite"
+target = "native"
+mapper = "rust"
+description = "Check if finite"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Bool"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __is_finite - WASM implementation
+# ==================================================
+[[functions]]
+name = "__is_finite"
+location = "__is_finite"
+target = "wasm"
+mapper = "wasm"
+description = "Check if finite (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Bool"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__is_normal"
+location = "brief_ffi_native::__is_normal"
+target = "native"
+mapper = "rust"
+description = "Check if normal"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Bool"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __is_normal - WASM implementation
+# ==================================================
+[[functions]]
+name = "__is_normal"
+location = "__is_normal"
+target = "wasm"
+mapper = "wasm"
+description = "Check if normal (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Bool"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__signum_float"
+location = "brief_ffi_native::__signum_float"
+target = "native"
+mapper = "rust"
+description = "Sign of float"
+
+[functions.input]
+n = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __signum_float - WASM implementation
+# ==================================================
+[[functions]]
+name = "__signum_float"
+location = "__signum_float"
+target = "wasm"
+mapper = "wasm"
+description = "Sign of float (WASM)"
+[functions.input]
+n = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__clamp_float"
+location = "brief_ffi_native::__clamp_float"
+target = "native"
+mapper = "rust"
+description = "Clamp float value"
+
+[functions.input]
+val = "Float"
+min = "Float"
+max = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __clamp_float - WASM implementation
+# ==================================================
+[[functions]]
+name = "__clamp_float"
+location = "__clamp_float"
+target = "wasm"
+mapper = "wasm"
+description = "Clamp float value (WASM)"
+[functions.input]
+val = "Float"
+min = "Float"
+max = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__min_float"
+location = "brief_ffi_native::__min_float"
+target = "native"
+mapper = "rust"
+description = "Minimum of two floats"
+
+[functions.input]
+a = "Float"
+b = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __min_float - WASM implementation
+# ==================================================
+[[functions]]
+name = "__min_float"
+location = "__min_float"
+target = "wasm"
+mapper = "wasm"
+description = "Minimum of two floats (WASM)"
+[functions.input]
+a = "Float"
+b = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__max_float"
+location = "brief_ffi_native::__max_float"
+target = "native"
+mapper = "rust"
+description = "Maximum of two floats"
+
+[functions.input]
+a = "Float"
+b = "Float"
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __max_float - WASM implementation
+# ==================================================
+[[functions]]
+name = "__max_float"
+location = "__max_float"
+target = "wasm"
+mapper = "wasm"
+description = "Maximum of two floats (WASM)"
+[functions.input]
+a = "Float"
+b = "Float"
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__div_rem"
+location = "brief_ffi_native::__div_rem"
+target = "native"
+mapper = "rust"
+description = "Division remainder"
+
+[functions.input]
+a = "Int"
+b = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __div_rem - WASM implementation
+# ==================================================
+[[functions]]
+name = "__div_rem"
+location = "__div_rem"
+target = "wasm"
+mapper = "wasm"
+description = "Division remainder (WASM)"
+[functions.input]
+a = "Int"
+b = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__gcd"
+location = "brief_ffi_native::__gcd"
+target = "native"
+mapper = "rust"
+description = "Greatest common divisor"
+
+[functions.input]
+a = "Int"
+b = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __gcd - WASM implementation
+# ==================================================
+[[functions]]
+name = "__gcd"
+location = "__gcd"
+target = "wasm"
+mapper = "wasm"
+description = "Greatest common divisor (WASM)"
+[functions.input]
+a = "Int"
+b = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__lcm"
+location = "brief_ffi_native::__lcm"
+target = "native"
+mapper = "rust"
+description = "Least common multiple"
+
+[functions.input]
+a = "Int"
+b = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __lcm - WASM implementation
+# ==================================================
+[[functions]]
+name = "__lcm"
+location = "__lcm"
+target = "wasm"
+mapper = "wasm"
+description = "Least common multiple (WASM)"
+[functions.input]
+a = "Int"
+b = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__signum"
+location = "brief_ffi_native::__signum"
+target = "native"
+mapper = "rust"
+description = "Sign of integer"
+
+[functions.input]
+n = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __signum - WASM implementation
+# ==================================================
+[[functions]]
+name = "__signum"
+location = "__signum"
+target = "wasm"
+mapper = "wasm"
+description = "Sign of integer (WASM)"
+[functions.input]
+n = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__random"
+location = "brief_ffi_native::__random"
+target = "native"
+mapper = "rust"
+description = "Random float 0-1"
+
+[functions.input]
+
+[functions.output.success]
+result = "Float"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __random - WASM implementation
+# ==================================================
+[[functions]]
+name = "__random"
+location = "__random"
+target = "wasm"
+mapper = "wasm"
+description = "Random float 0-1 (WASM)"
+wasm_impl = """function __random() { return Math.random(); }"""
+
+[functions.input]
+[functions.output.success]
+result = "Float"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__random_int"
+location = "brief_ffi_native::__random_int"
+target = "native"
+mapper = "rust"
+description = "Random integer in range"
+
+[functions.input]
+min = "Int"
+max = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"
+
+# ==================================================
+# __random_int - WASM implementation
+# ==================================================
+[[functions]]
+name = "__random_int"
+location = "__random_int"
+target = "wasm"
+mapper = "wasm"
+description = "Random integer in range (WASM)"
+[functions.input]
+min = "Int"
+max = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "MathError"
+code = "Int"
+message = "String"

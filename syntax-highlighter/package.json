@@ -1,0 +1,190 @@
+{
+  "name": "brief-language",
+  "displayName": "Brief Language",
+  "description": "Syntax highlighting, folding, bracket colorization, and intelligent editing for Brief (.bv), Rendered Brief (.rbv), and Embedded Brief (.ebv) files",
+  "version": "0.1.0",
+  "publisher": "randozart",
+  "icon": "images/extension-logo.svg",
+  "main": "./client/extension.js",
+  "activationEvents": [
+    "onLanguage:brief",
+    "onLanguage:rbv",
+    "onLanguage:ebv"
+  ],
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Themes"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "brief",
+        "aliases": [
+          "Brief",
+          "brief"
+        ],
+        "extensions": [
+          ".bv"
+        ],
+        "icon": {
+          "light": "./images/brief-logo.svg",
+          "dark": "./images/brief-logo.svg"
+        },
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "rbv",
+        "aliases": [
+          "Rendered Brief",
+          "rendered-brief"
+        ],
+        "extensions": [
+          ".rbv"
+        ],
+        "icon": {
+          "light": "./images/r-brief-logo.svg",
+          "dark": "./images/r-brief-logo.svg"
+        },
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "ebv",
+        "aliases": [
+          "Embedded Brief",
+          "embedded-brief"
+        ],
+        "extensions": [
+          ".ebv"
+        ],
+        "icon": {
+          "light": "./images/e-brief-logo.svg",
+          "dark": "./images/e-brief-logo.svg"
+        },
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "brief",
+        "scopeName": "source.brief",
+        "path": "./syntaxes/brief.tmLanguage.json"
+      },
+      {
+        "language": "rbv",
+        "scopeName": "source.rbv",
+        "path": "./syntaxes/rbv.tmLanguage.json"
+      },
+      {
+        "language": "ebv",
+        "scopeName": "source.brief",
+        "path": "./syntaxes/brief.tmLanguage.json"
+      }
+    ],
+    "themes": [
+      {
+        "label": "Brief Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/brief-dark.json"
+      },
+      {
+        "label": "Brief Light",
+        "uiTheme": "vs",
+        "path": "./themes/brief-light.json"
+      }
+    ],
+    "folding": [
+      {
+        "language": "brief",
+        "boundaries": [
+          "// === PATH ANALYSIS ===",
+          "// === END PATH ANALYSIS ==="
+        ]
+      }
+    ],
+    "brackets": [
+      {
+        "language": "brief",
+        "open": "{",
+        "close": "}"
+      },
+      {
+        "language": "brief",
+        "open": "[",
+        "close": "]"
+      },
+      {
+        "language": "brief",
+        "open": "(",
+        "close": ")"
+      }
+    ],
+    "autoClosingPairs": [
+      {
+        "open": "{",
+        "close": "}",
+        "notIn": [
+          "string",
+          "comment"
+        ]
+      },
+      {
+        "open": "[",
+        "close": "]",
+        "notIn": [
+          "string",
+          "comment"
+        ]
+      },
+      {
+        "open": "(",
+        "close": ")",
+        "notIn": [
+          "string",
+          "comment"
+        ]
+      },
+      {
+        "open": "\"",
+        "close": "\"",
+        "notIn": [
+          "string",
+          "comment"
+        ]
+      }
+    ],
+    "surroundingPairs": [
+      {
+        "open": "{",
+        "close": "}"
+      },
+      {
+        "open": "[",
+        "close": "]"
+      },
+      {
+        "open": "(",
+        "close": ")"
+      },
+      {
+        "open": "\"",
+        "close": "\""
+      }
+    ],
+    "comments": {
+      "lineComment": "#"
+    },
+    "indentationRules": {
+      "increaseIndentPattern": "\\{[^}]*${|\\[([^\\]]*${|\\([^)]*${",
+      "decreaseIndentPattern": "^\\s*\\]|\\}\\s*$|\\)\\s*$"
+    }
+  },
+  "devDependencies": {
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^8.0.2"
+  }
+}

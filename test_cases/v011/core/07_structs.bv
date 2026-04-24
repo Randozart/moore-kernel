@@ -1,0 +1,17 @@
+// Test: Struct definitions
+// Category: Core - Structs
+// Expected: Compiles with struct definition
+
+struct Point {
+    let x: Int = 0;
+    let y: Int = 0;
+};
+
+let px: Int = 0;
+
+rct txn init_point [px == 0]
+  [px == 5]
+{
+    &px = 5;
+    term;
+};

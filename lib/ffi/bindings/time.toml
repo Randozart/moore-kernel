@@ -1,0 +1,921 @@
+# Standard Time Bindings
+# Provides time and date operations
+
+[[functions]]
+name = "__now"
+location = "brief_ffi_native::__now"
+target = "native"
+mapper = "rust"
+description = "Get current timestamp (seconds)"
+
+[functions.input]
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __now - WASM implementation
+# ==================================================
+[[functions]]
+name = "__now"
+location = "__now"
+target = "wasm"
+mapper = "wasm"
+description = "Get current timestamp (seconds) (WASM)"
+wasm_impl = """function __now() {
+    return Date.now();
+}"""
+
+[functions.input]
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__now_millis"
+location = "brief_ffi_native::__now_millis"
+target = "native"
+mapper = "rust"
+description = "Get current timestamp (milliseconds)"
+
+[functions.input]
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __now_millis - WASM implementation
+# ==================================================
+[[functions]]
+name = "__now_millis"
+location = "__now_millis"
+target = "wasm"
+mapper = "wasm"
+description = "Get current timestamp (milliseconds) (WASM)"
+[functions.input]
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__now_micros"
+location = "brief_ffi_native::__now_micros"
+target = "native"
+mapper = "rust"
+description = "Get current timestamp (microseconds)"
+
+[functions.input]
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __now_micros - WASM implementation
+# ==================================================
+[[functions]]
+name = "__now_micros"
+location = "__now_micros"
+target = "wasm"
+mapper = "wasm"
+description = "Get current timestamp (microseconds) (WASM)"
+[functions.input]
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__year"
+location = "brief_ffi_native::__year"
+target = "native"
+mapper = "rust"
+description = "Get year from timestamp"
+
+[functions.input]
+timestamp = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __year - WASM implementation
+# ==================================================
+[[functions]]
+name = "__year"
+location = "__year"
+target = "wasm"
+mapper = "wasm"
+description = "Get year from timestamp (WASM)"
+wasm_impl = """function __year(timestamp) {
+    return new Date(timestamp).getFullYear();
+}"""
+
+[functions.input]
+timestamp = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__month"
+location = "brief_ffi_native::__month"
+target = "native"
+mapper = "rust"
+description = "Get month from timestamp"
+
+[functions.input]
+timestamp = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __month - WASM implementation
+# ==================================================
+[[functions]]
+name = "__month"
+location = "__month"
+target = "wasm"
+mapper = "wasm"
+description = "Get month from timestamp (WASM)"
+wasm_impl = """function __month(timestamp) {
+    return new Date(timestamp).getMonth() + 1;
+}"""
+
+[functions.input]
+timestamp = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__day"
+location = "brief_ffi_native::__day"
+target = "native"
+mapper = "rust"
+description = "Get day from timestamp"
+
+[functions.input]
+timestamp = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __day - WASM implementation
+# ==================================================
+[[functions]]
+name = "__day"
+location = "__day"
+target = "wasm"
+mapper = "wasm"
+description = "Get day from timestamp (WASM)"
+wasm_impl = """function __day(timestamp) {
+    return new Date(timestamp).getDate();
+}"""
+
+[functions.input]
+timestamp = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__hour"
+location = "brief_ffi_native::__hour"
+target = "native"
+mapper = "rust"
+description = "Get hour from timestamp"
+
+[functions.input]
+timestamp = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __hour - WASM implementation
+# ==================================================
+[[functions]]
+name = "__hour"
+location = "__hour"
+target = "wasm"
+mapper = "wasm"
+description = "Get hour from timestamp (WASM)"
+wasm_impl = """function __hour(timestamp) {
+    return new Date(timestamp).getHours();
+}"""
+
+[functions.input]
+timestamp = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__minute"
+location = "brief_ffi_native::__minute"
+target = "native"
+mapper = "rust"
+description = "Get minute from timestamp"
+
+[functions.input]
+timestamp = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __minute - WASM implementation
+# ==================================================
+[[functions]]
+name = "__minute"
+location = "__minute"
+target = "wasm"
+mapper = "wasm"
+description = "Get minute from timestamp (WASM)"
+wasm_impl = """function __minute(timestamp) {
+    return new Date(timestamp).getMinutes();
+}"""
+
+[functions.input]
+timestamp = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__second"
+location = "brief_ffi_native::__second"
+target = "native"
+mapper = "rust"
+description = "Get second from timestamp"
+
+[functions.input]
+timestamp = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __second - WASM implementation
+# ==================================================
+[[functions]]
+name = "__second"
+location = "__second"
+target = "wasm"
+mapper = "wasm"
+description = "Get second from timestamp (WASM)"
+wasm_impl = """function __second(timestamp) {
+    return new Date(timestamp).getSeconds();
+}"""
+
+[functions.input]
+timestamp = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__weekday"
+location = "brief_ffi_native::__weekday"
+target = "native"
+mapper = "rust"
+description = "Get weekday from timestamp"
+
+[functions.input]
+timestamp = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __weekday - WASM implementation
+# ==================================================
+[[functions]]
+name = "__weekday"
+location = "__weekday"
+target = "wasm"
+mapper = "wasm"
+description = "Get weekday from timestamp (WASM)"
+[functions.input]
+timestamp = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__yearday"
+location = "brief_ffi_native::__yearday"
+target = "native"
+mapper = "rust"
+description = "Get day of year from timestamp"
+
+[functions.input]
+timestamp = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __yearday - WASM implementation
+# ==================================================
+[[functions]]
+name = "__yearday"
+location = "__yearday"
+target = "wasm"
+mapper = "wasm"
+description = "Get day of year from timestamp (WASM)"
+[functions.input]
+timestamp = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__timestamp"
+location = "brief_ffi_native::__timestamp"
+target = "native"
+mapper = "rust"
+description = "Create timestamp from date"
+
+[functions.input]
+year = "Int"
+month = "Int"
+day = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __timestamp - WASM implementation
+# ==================================================
+[[functions]]
+name = "__timestamp"
+location = "__timestamp"
+target = "wasm"
+mapper = "wasm"
+description = "Create timestamp from date (WASM)"
+[functions.input]
+year = "Int"
+month = "Int"
+day = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__timestamp_full"
+location = "brief_ffi_native::__timestamp_full"
+target = "native"
+mapper = "rust"
+description = "Create timestamp from full date/time"
+
+[functions.input]
+year = "Int"
+month = "Int"
+day = "Int"
+hour = "Int"
+minute = "Int"
+second = "Int"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __timestamp_full - WASM implementation
+# ==================================================
+[[functions]]
+name = "__timestamp_full"
+location = "__timestamp_full"
+target = "wasm"
+mapper = "wasm"
+description = "Create timestamp from full date/time (WASM)"
+[functions.input]
+year = "Int"
+month = "Int"
+day = "Int"
+hour = "Int"
+minute = "Int"
+second = "Int"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__format_timestamp"
+location = "brief_ffi_native::__format_timestamp"
+target = "native"
+mapper = "rust"
+description = "Format timestamp with custom format"
+
+[functions.input]
+timestamp = "Int"
+format = "String"
+
+[functions.output.success]
+result = "String"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __format_timestamp - WASM implementation
+# ==================================================
+[[functions]]
+name = "__format_timestamp"
+location = "__format_timestamp"
+target = "wasm"
+mapper = "wasm"
+description = "Format timestamp with custom format (WASM)"
+wasm_impl = """function __format_timestamp(timestamp, format) {
+    return new Date(timestamp).toISOString();
+}"""
+
+[functions.input]
+timestamp = "Int"
+format = "String"
+[functions.output.success]
+result = "String"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__format_date"
+location = "brief_ffi_native::__format_date"
+target = "native"
+mapper = "rust"
+description = "Format as date string"
+
+[functions.input]
+timestamp = "Int"
+
+[functions.output.success]
+result = "String"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __format_date - WASM implementation
+# ==================================================
+[[functions]]
+name = "__format_date"
+location = "__format_date"
+target = "wasm"
+mapper = "wasm"
+description = "Format as date string (WASM)"
+[functions.input]
+timestamp = "Int"
+[functions.output.success]
+result = "String"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__format_time"
+location = "brief_ffi_native::__format_time"
+target = "native"
+mapper = "rust"
+description = "Format as time string"
+
+[functions.input]
+timestamp = "Int"
+
+[functions.output.success]
+result = "String"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __format_time - WASM implementation
+# ==================================================
+[[functions]]
+name = "__format_time"
+location = "__format_time"
+target = "wasm"
+mapper = "wasm"
+description = "Format as time string (WASM)"
+[functions.input]
+timestamp = "Int"
+[functions.output.success]
+result = "String"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__format_datetime"
+location = "brief_ffi_native::__format_datetime"
+target = "native"
+mapper = "rust"
+description = "Format as datetime string"
+
+[functions.input]
+timestamp = "Int"
+
+[functions.output.success]
+result = "String"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __format_datetime - WASM implementation
+# ==================================================
+[[functions]]
+name = "__format_datetime"
+location = "__format_datetime"
+target = "wasm"
+mapper = "wasm"
+description = "Format as datetime string (WASM)"
+[functions.input]
+timestamp = "Int"
+[functions.output.success]
+result = "String"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__parse_timestamp"
+location = "brief_ffi_native::__parse_timestamp"
+target = "native"
+mapper = "rust"
+description = "Parse timestamp from string"
+
+[functions.input]
+s = "String"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __parse_timestamp - WASM implementation
+# ==================================================
+[[functions]]
+name = "__parse_timestamp"
+location = "__parse_timestamp"
+target = "wasm"
+mapper = "wasm"
+description = "Parse timestamp from string (WASM)"
+[functions.input]
+s = "String"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__parse_datetime"
+location = "brief_ffi_native::__parse_datetime"
+target = "native"
+mapper = "rust"
+description = "Parse datetime from string"
+
+[functions.input]
+s = "String"
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __parse_datetime - WASM implementation
+# ==================================================
+[[functions]]
+name = "__parse_datetime"
+location = "__parse_datetime"
+target = "wasm"
+mapper = "wasm"
+description = "Parse datetime from string (WASM)"
+[functions.input]
+s = "String"
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__seconds_per_minute"
+location = "brief_ffi_native::__seconds_per_minute"
+target = "native"
+mapper = "rust"
+description = "Constant: seconds per minute"
+
+[functions.input]
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __seconds_per_minute - WASM implementation
+# ==================================================
+[[functions]]
+name = "__seconds_per_minute"
+location = "__seconds_per_minute"
+target = "wasm"
+mapper = "wasm"
+description = "Constant: seconds per minute (WASM)"
+[functions.input]
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__seconds_per_hour"
+location = "brief_ffi_native::__seconds_per_hour"
+target = "native"
+mapper = "rust"
+description = "Constant: seconds per hour"
+
+[functions.input]
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __seconds_per_hour - WASM implementation
+# ==================================================
+[[functions]]
+name = "__seconds_per_hour"
+location = "__seconds_per_hour"
+target = "wasm"
+mapper = "wasm"
+description = "Constant: seconds per hour (WASM)"
+[functions.input]
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__seconds_per_day"
+location = "brief_ffi_native::__seconds_per_day"
+target = "native"
+mapper = "rust"
+description = "Constant: seconds per day"
+
+[functions.input]
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __seconds_per_day - WASM implementation
+# ==================================================
+[[functions]]
+name = "__seconds_per_day"
+location = "__seconds_per_day"
+target = "wasm"
+mapper = "wasm"
+description = "Constant: seconds per day (WASM)"
+[functions.input]
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__millis_per_second"
+location = "brief_ffi_native::__millis_per_second"
+target = "native"
+mapper = "rust"
+description = "Constant: milliseconds per second"
+
+[functions.input]
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+
+
+# ==================================================
+# __millis_per_second - WASM implementation
+# ==================================================
+[[functions]]
+name = "__millis_per_second"
+location = "__millis_per_second"
+target = "wasm"
+mapper = "wasm"
+description = "Constant: milliseconds per second (WASM)"
+[functions.input]
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+[[functions]]
+name = "__micros_per_second"
+location = "brief_ffi_native::__micros_per_second"
+target = "native"
+mapper = "rust"
+description = "Constant: microseconds per second"
+
+[functions.input]
+
+[functions.output.success]
+result = "Int"
+
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"
+
+# ==================================================
+# __micros_per_second - WASM implementation
+# ==================================================
+[[functions]]
+name = "__micros_per_second"
+location = "__micros_per_second"
+target = "wasm"
+mapper = "wasm"
+description = "Constant: microseconds per second (WASM)"
+[functions.input]
+[functions.output.success]
+result = "Int"
+[functions.output.error]
+type = "TimeError"
+code = "Int"
+message = "String"

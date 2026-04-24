@@ -1,0 +1,12 @@
+// Test: Import statements
+// Category: Core - Imports
+// Expected: Compiles with import syntax
+
+let value: Int = 0;
+
+rct txn init [value == 0]
+  [value == 42]
+{
+    &value = 42;
+    term;
+};
