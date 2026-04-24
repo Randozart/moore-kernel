@@ -1,0 +1,5 @@
+[package]
+name = "pcap-driver"
+version = "0.1.0"
+edition = "2021"
+description = "PCAP (Processor Configuration Access Port) driver for KV260"

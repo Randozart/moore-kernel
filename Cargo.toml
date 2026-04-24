@@ -4,6 +4,8 @@ members = [
     "brief-compiler",
     "brief-control/bvc",
     "kernel/msh",
+    "kernel/drivers",
+    "kernel/security",
 ]
 
 [workspace.package]
