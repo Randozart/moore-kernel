@@ -1,4 +1,7 @@
 ## LITANIAE CODICIS CANCELLARII 
+
+<img src="moore-seal.svg" alt="Brief" width="200"/> 
+
 **In Logica Gravitas, In Silica Veritas**
 
 ---
@@ -119,3 +122,7 @@
 `70 6F 72 20 69 73 20 74 68 65 20 53 74 6F 6E 65`
 
 `2E`
+
+---
+
+**Seven Litanies total, so it is prescribed: That the soul of the Logic be in Silicon inscribed.**

@@ -1,4 +1,5 @@
 # Moore Kernel
+<img src="moore-seal.svg" alt="Brief" width="200"/> 
 
 A bare-metal operating system that treats FPGA bitstreams as first-class physical processes. Programs are written in Brief, transpiled to SystemVerilog, synthesized into bitstreams, and mounted onto live FPGA fabric.
 
