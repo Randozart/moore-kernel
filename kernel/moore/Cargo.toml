@@ -6,15 +6,8 @@ description = "Moore Kernel - Bare-metal OS for Xilinx KV260"
 
 [lib]
 path = "src/lib.rs"
-test = false
-
-[[bin]]
-name = "moore"
-path = "src/main.rs"
+doctest = false
 test = false
 
 [features]
 default = []
-
-[profile.dev]
-opt-level = 0

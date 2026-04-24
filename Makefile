@@ -27,7 +27,7 @@ check:
 
 # Run unit tests
 test:
-	cargo test --workspace --lib
+	cargo test --workspace --lib --exclude moore
 	cargo test -p msh
 
 # Deploy bitstreams to SD card

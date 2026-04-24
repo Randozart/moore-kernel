@@ -19,3 +19,9 @@ license = "MIT OR Apache-2.0"
 opt-level = "z"
 lto = true
 codegen-units = 1
+
+[profile.dev]
+opt-level = 0
+
+[profile.dev.package.moore]
+opt-level = 0

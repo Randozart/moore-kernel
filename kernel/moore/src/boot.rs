@@ -1,5 +1,3 @@
-#![no_std]
-
 pub const UART0_BASE: u32 = 0xFF00_0000;
 pub const UART_CTRL: u32 = UART0_BASE;
 pub const UART_STAT: u32 = UART0_BASE + 0x04;
