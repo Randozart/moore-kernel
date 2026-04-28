@@ -5,6 +5,32 @@ A bare-metal operating system that treats FPGA bitstreams as first-class physica
 
 **Status:** MVP development — not production-ready
 
+## A Brief Manifesto
+
+For seventy years, operating systems have been managers of *time*. The Von Neumann architecture relies on a rigid, unchangeable pipe where massive amounts of energy are wasted fetching, decoding, and predicting sequential instructions. It is, fundamentally, a heat engine that does computation. This is awfully reductive, I am aware, but bear with my rhetoric device.
+
+The Moore Kernel attempts to abandon this bottleneck. It is an operating system that manages physical space. 
+
+By compiling Brief’s declarative contracts directly into physical circuit topology, the instruction-fetch bottleneck is eliminated. Data does not wait in memory; it flows continuously through the hardware. This shift unlocks three core principles:
+
+* **The Ecological Imperative:** Traditional software turns raw power into wasted clock cycles. Spatial computing allows highly complex logic to run directly through physical gates at a fraction of a watt. It provides an underlying architecture capable of running complex ecological, biomimetic, and systemic models at speeds and efficiencies traditional CPUs cannot reach.
+
+* **Immortal Hardware:** When traditional software outgrows a fixed chip, millions of tons of silicon become e-waste. The Moore Kernel decouples the *function* from the *factory*. Because the hardware fabric is fluid, a single piece of silicon can be a dedicated network router in the morning, dynamically reconfigure into a spatial simulation engine in the afternoon, and become a medical controller at night. Silicon no longer dies, but is allowed to adapt.
+
+* **Opinionated Systems Engineering:** We are standing at the footsteps of a new era. The execution barrier has collapsed. If I, a single person behind a PC can design a kernel and OS by simply learning about systems architecture, and with AI pattern matchers removing the friction of boilerplate, architecture is now bounded only by our hopes, dreams, and curiosities. 
+
+The Moore Kernel assumes infinite extensibility as a baseline. It is an invitation to build the "GeoCities of silicon". To return to an era of weird, beautiful, highly-opinionated computing where hardware is a canvas, and we simply propose the reality we wish to see.
+
+If the future is as wonderful and whimsical as I hope it to be, then a few years from now:
+
+* People will build bespoke operating systems that only exist to run a single synthesizer in their bedroom.
+
+* Someone will write an OS where the file system isn't a hierarchy of folders, but a literal 3D spatial map they navigate with a joystick.
+
+* Someone else will build a kernel that completely deletes itself and rebuilds from scratch every time the sun sets.
+
+And here stands Moore, an OS where the hardware itself melts and reconfigures based on propositional logic. If not for my engineering skill, I at least invite you to dream with me of an era where systems and technology are a playground, to those willing to learn them.
+
 ## Quick Start
 
 ```bash
